@@ -17,26 +17,41 @@
                 <input class="homey-form-input" id="email" type="email" value="" />
             </div>
         </fieldset>
-        <button id="activate" class="homey-button-primary">Activate your e-mail</button>
+        <button id="activate" class="homey-button-primary" onclick="activateEmail()">Activate your e-mail</button>
         <button id="save" class="homey-button-primary">Finish activation</button>
     <!-- </form> -->
 
     <script type="text/javascript">
 
+ async function activateEmail() {
+    var emailElement = document.getElementById('email');
+    console.log('email value html',emailElement.value);
+    Homey.api('POST', '/',{email: emailElement.value}, function (err, success) {
+        if (err) {
+        console.log('error ',err)
+      }
+        if (!err && success) {
+        console.log('success')
+      }
+    });
+   }
+
+
         function onHomeyReady(Homey) {
 
             Homey.ready();
 
-            var apikeyElement = document.getElementById('apikey');
+            var emailElement = document.getElementById('email');
+            var activateElement = document.getElementById('activate');
             var saveElement = document.getElementById('save');
 
             Homey.get('apikey', function (err, apikey) {
                 if (err) return Homey.alert(err);
-                apikeyElement.value = apikey;
+                emailElement.value = apikey;
             });
 
-            saveElement.addEventListener('click', function (e) {
-                Homey.set('apikey', apikeyElement.value, function (err) {
+            activateElement.addEventListener('click', function (e) {
+                Homey.set('email', emailElement.value, function (err) {
                     if (err) return Homey.alert(err);
                 });
             });
