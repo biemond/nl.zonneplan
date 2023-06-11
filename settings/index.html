@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+</head>
+<body>
+    <header class="homey-header">
+        <h1 class="homey-title" data-i18n="settings.title"></h1>
+        <p class="homey-subtitle" data-i18n="settings.subtitle"></p>
+    </header>
+
+    <!-- <form class="homey-form"> -->
+        <fieldset class="homey-form-fieldset">
+            <legend class="homey-form-legend">XBOX Settings</legend>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="email">E-mail</label>
+                <input class="homey-form-input" id="email" type="email" value="" />
+            </div>
+        </fieldset>
+        <button id="activate" class="homey-button-primary">Activate your e-mail</button>
+        <button id="save" class="homey-button-primary">Finish activation</button>
+    <!-- </form> -->
+
+    <script type="text/javascript">
+
+        function onHomeyReady(Homey) {
+
+            Homey.ready();
+
+            var apikeyElement = document.getElementById('apikey');
+            var saveElement = document.getElementById('save');
+
+            Homey.get('apikey', function (err, apikey) {
+                if (err) return Homey.alert(err);
+                apikeyElement.value = apikey;
+            });
+
+            saveElement.addEventListener('click', function (e) {
+                Homey.set('apikey', apikeyElement.value, function (err) {
+                    if (err) return Homey.alert(err);
+                });
+            });
+        }
+    </script>
+
+</body>
+
+</html>
