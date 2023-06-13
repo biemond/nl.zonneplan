@@ -11,17 +11,19 @@
 
     <!-- <form class="homey-form"> -->
         <fieldset class="homey-form-fieldset">
-            <legend class="homey-form-legend">XBOX Settings</legend>
+            <legend class="homey-form-legend">Verification</legend>
             <div class="homey-form-group">
                 <label class="homey-form-label" for="email">E-mail</label>
                 <input class="homey-form-input" id="email" type="email" value="" />
             </div>
         </fieldset>
         <button id="activate" class="homey-button-primary" onclick="activateEmail()">Activate your e-mail</button>
-        <button id="save" class="homey-button-primary">Finish activation</button>
+        <button id="save" class="homey-button-primary" onclick="save()" disabled="disabled">Finish activation</button>
     <!-- </form> -->
 
     <script type="text/javascript">
+        let uuid;
+        let otpObject = {};
 
  async function activateEmail() {
     var emailElement = document.getElementById('email');
@@ -29,13 +31,34 @@
     Homey.api('POST', '/',{email: emailElement.value}, function (err, success) {
         if (err) {
         console.log('error ',err)
+        Homey.alert("Email you have entered is not registered.");
       }
         if (!err && success) {
-        console.log('success')
+        console.log('success', success.data.uuid)
+        uuid = success.data.uuid;
+        var saveElement = document.getElementById('save');
+        const message = "We send an activation email to "
+        +emailElement.value+", please activate and then click Finish activation to get OTP."
+        Homey.alert(message )
+        saveElement.removeAttribute("disabled");
+
+      }
+    }); 
+   }
+
+   
+   async function save() {
+    console.log('uuid in save html',uuid);
+    Homey.api('GET', '/otp/'+uuid,{}, function (err, success) {
+        if (err) {
+        console.log('error ',err)
+      }
+        if (!err && success) {
+        otpObject = success.data;
+        console.log('otpObject values ', otpObject)
       }
     });
    }
-
 
         function onHomeyReady(Homey) {
 

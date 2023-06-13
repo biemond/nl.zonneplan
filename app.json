@@ -30,8 +30,11 @@
   "api": {
     "postActivate": {
       "method": "POST",
-      "path": "/",
-      "public": true
+      "path": "/"
+    },
+    "getOTP": {
+      "method": "GET",
+      "path": "/otp/:uuid"
     }
   },
   "drivers": [
