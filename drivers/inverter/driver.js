@@ -1,6 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
+const apis = require('./api.js');
 
 module.exports = class SolarplanDriver extends Homey.Driver {
 
@@ -22,21 +23,25 @@ module.exports = class SolarplanDriver extends Homey.Driver {
       } else {
 
         let devices = [];
+       const resp = await apis.getDevice('')
+       console.log('Get device in main call ',resp.data.address_groups[0].connections[0].uuid)
+       const id = resp.data.address_groups[0].connections[0].uuid;
+       var device = {
+        name: id ,
+        data: {
+          id: id,
+          name: id
+        }
+      };
 
-        var device = {
-          name: "bla",
-          data: {
-            id: "bla",
-            name: "bla"
-          }
-        };
         devices.push(device);
 
-        console.log(devices);
+        console.log('List of devices ',devices);
         return devices;
       }
     });
   }
+
 
 
 }
