@@ -35,6 +35,11 @@
     "getOTP": {
       "method": "GET",
       "path": "/otp/:uuid"
+    },
+
+    "postToken": {
+      "method": "POST",
+      "path": "/token/"
     }
   }
 }

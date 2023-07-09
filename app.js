@@ -33,6 +33,21 @@ class MyZonneplanApp extends Homey.App {
     return resp;
   }
 
+  async getToken(email,password) {
+    let url = 'https://app-api.zonneplan.nl/oauth/token';
+    console.log('making call to get token')
+    const res =  await fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      referrerPolicy: "no-referrer",
+      credentials: "include",
+      body: JSON.stringify({ email: email,password:password,grant_type: "one_time_password" }),
+    });
+    const resp = await res.json();
+        console.log('we got token ',resp)
+   return resp;
+ }
+
 }
 
 module.exports = MyZonneplanApp;

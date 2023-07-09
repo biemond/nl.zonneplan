@@ -64,7 +64,29 @@
                     Homey.set('password', otpObject.password, function (err) {
                         if (err) return Homey.alert(err);
                     });
+                    getToken(otpObject.email, otpObject.password)
                     Homey.alert("All is ok, please add the zonneplan device")
+                }
+            });
+        }
+
+        async function getToken(email, password) {
+            var emailElement = document.getElementById('email');
+            console.log('email value html', emailElement.value);
+            Homey.api('POST', '/token', { email: email, password: password }, function (err, success) {
+                if (err) {
+                    console.log('error ', err)
+                    Homey.alert("Problem with retrieving token");
+                }
+                if (!err && success) {
+                    console.log('success', success)
+                    Homey.set('access_token', success.access_token, function (err) {
+                        if (err) return Homey.alert(err);
+                    });
+                    Homey.set('refresh_token', success.refresh_token, function (err) {
+                        if (err) return Homey.alert(err);
+                    });
+
                 }
             });
         }
