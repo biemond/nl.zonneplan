@@ -1,6 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
+const apis = require('./api.js');
 
 const RETRY_INTERVAL = 300 * 1000;
 let timer;
@@ -51,5 +52,23 @@ module.exports = class SolarplanDevice extends Homey.Device {
     console.log("accessToken " + accessToken);
     console.log("refreshToken " + refreshToken);
     console.log("id " + unitID);
+    const resp = await apis.getDevice(accessToken)
+    const meta = getContractData(resp.data.address_groups, unitID)
+    console.log("meta data ", meta)
   }
+}
+
+function getContractData(arrayOfGroups,id) {
+  const filteredData = arrayOfGroups.map((element) => {
+    return {
+      connections: element.connections.map((connection) => {
+        return { contracts: connection.contracts.find((contract) => contract.uuid == id) }
+      }
+
+      )
+    }
+  })
+
+  return filteredData[0].connections[0].contracts.meta
+
 }
