@@ -3,7 +3,14 @@
     "en": "inverter"
   },
   "class": "solarpanel",
-  "capabilities": [],
+  "capabilities": [
+    "measure_power",
+    "meter_power",
+    "lastmeasured",
+    "panel_count",
+    "panel_total_wp",
+    "panel_wp"   
+  ],
   "platforms": [
     "local"
   ],

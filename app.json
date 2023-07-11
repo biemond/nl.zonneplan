@@ -47,7 +47,14 @@
         "en": "inverter"
       },
       "class": "solarpanel",
-      "capabilities": [],
+      "capabilities": [
+        "measure_power",
+        "meter_power",
+        "lastmeasured",
+        "panel_count",
+        "panel_total_wp",
+        "panel_wp"
+      ],
       "platforms": [
         "local"
       ],
@@ -77,5 +84,108 @@
       ],
       "id": "inverter"
     }
-  ]
+  ],
+  "capabilities": {
+    "lastmeasured": {
+      "type": "string",
+      "title": {
+        "en": "Last update"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "uiQuickAction": false
+    },
+    "measure_power": {
+      "type": "number",
+      "title": {
+        "en": "Power",
+        "nl": "Vermogen"
+      },
+      "units": {
+        "en": "W"
+      },
+      "insights": true,
+      "desc": {
+        "en": "Power in watt (W)",
+        "nl": "Vermogen in watt (W)"
+      },
+      "chartType": "stepLine",
+      "decimals": 2,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "meter_power": {
+      "type": "number",
+      "title": {
+        "en": "Total Yield",
+        "nl": "Totale opbrengst"
+      },
+      "decimals": 0,
+      "units": {
+        "en": "kWh"
+      },
+      "desc": {
+        "en": "Energy usage in kilowatt-hour (kWh)",
+        "nl": "Energie verbruik in kilowattuur (kWh)"
+      },
+      "chartType": "spline",
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "panel_count": {
+      "type": "number",
+      "title": {
+        "en": "panel count"
+      },
+      "insights": true,
+      "desc": {
+        "en": "Total panel",
+        "nl": "Total aantal panelen"
+      },
+      "decimals": 0,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "panel_total_wp": {
+      "type": "number",
+      "title": {
+        "en": "Installation wp"
+      },
+      "insights": true,
+      "desc": {
+        "en": "Installation WP",
+        "nl": "Installatie WP"
+      },
+      "decimals": 0,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "units": {
+        "en": "WP"
+      }
+    },
+    "panel_wp": {
+      "type": "number",
+      "title": {
+        "en": "Panel wp"
+      },
+      "insights": true,
+      "desc": {
+        "en": "Panel WP",
+        "nl": "Paneel WP"
+      },
+      "decimals": 0,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "units": {
+        "en": "WP"
+      }
+    }
+  }
 }
