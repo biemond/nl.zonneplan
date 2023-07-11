@@ -22,7 +22,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
       this.pollInvertor();
     }, RETRY_INTERVAL);
 
-    this.pollInvertor();
+    // this.pollInvertor();
   }
 
   async onAdded() {
@@ -65,32 +65,33 @@ module.exports = class SolarplanDevice extends Homey.Device {
     if (this.validResult(meta['last_measured_power_value'])) {
       this.addCapability('measure_power');
       var power = meta['last_measured_power_value'];
+      console.log("power ", power)
       this.setCapabilityValue('measure_power', power);
     }
     if (this.validResult(meta['total_power_measured'])) {
       this.addCapability('meter_power');
-      var power = meta['total_power_measured'];
-      this.setCapabilityValue('meter_power', power);
+      var total = meta['total_power_measured']/1000;
+      this.setCapabilityValue('meter_power', total);
     }
     if (this.validResult(meta['last_measured_at'])) {
       this.addCapability('lastmeasured');
-      var power = meta['last_measured_at'];
-      this.setCapabilityValue('lastmeasured', power);
+      var date = meta['last_measured_at'].substring(0, 19);
+      this.setCapabilityValue('lastmeasured', date);
     }  
     if (this.validResult(meta['panel_wp'])) {
       this.addCapability('panel_wp');
-      var power = meta['panel_wp'];
-      this.setCapabilityValue('panel_wp', power);
+      var panel = meta['panel_wp'];
+      this.setCapabilityValue('panel_wp', panel);
     }  
     if (this.validResult(meta['installation_wp'])) {
       this.addCapability('panel_total_wp');
-      var power = meta['installation_wp'];
-      this.setCapabilityValue('panel_total_wp', power);
+      var panel = meta['installation_wp'];
+      this.setCapabilityValue('panel_total_wp', panel);
     }  
     if (this.validResult(meta['panel_count'])) {
       this.addCapability('panel_count');
-      var power = meta['panel_count'];
-      this.setCapabilityValue('panel_count', power);
+      var panel = meta['panel_count'];
+      this.setCapabilityValue('panel_count', panel);
     }                      
   }
 }
