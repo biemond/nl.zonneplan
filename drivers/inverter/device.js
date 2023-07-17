@@ -49,7 +49,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     return false;
   }
 
-  setValues(meta){
+  setValues(meta) {
     if (this.validResult(meta['last_measured_power_value'])) {
       this.addCapability('measure_power');
       var power = meta['last_measured_power_value'];
@@ -58,29 +58,29 @@ module.exports = class SolarplanDevice extends Homey.Device {
     }
     if (this.validResult(meta['total_power_measured'])) {
       this.addCapability('meter_power');
-      var total = meta['total_power_measured']/1000;
+      var total = meta['total_power_measured'] / 1000;
       this.setCapabilityValue('meter_power', total);
     }
     if (this.validResult(meta['last_measured_at'])) {
       this.addCapability('lastmeasured');
       var date = meta['last_measured_at'].substring(0, 19);
       this.setCapabilityValue('lastmeasured', date);
-    }  
+    }
     if (this.validResult(meta['panel_wp'])) {
       this.addCapability('panel_wp');
       var panel = meta['panel_wp'];
       this.setCapabilityValue('panel_wp', panel);
-    }  
+    }
     if (this.validResult(meta['installation_wp'])) {
       this.addCapability('panel_total_wp');
       var panel = meta['installation_wp'];
       this.setCapabilityValue('panel_total_wp', panel);
-    }  
+    }
     if (this.validResult(meta['panel_count'])) {
       this.addCapability('panel_count');
       var panel = meta['panel_count'];
       this.setCapabilityValue('panel_count', panel);
-    } 
+    }
   }
 
   async pollInvertor() {
@@ -94,22 +94,22 @@ module.exports = class SolarplanDevice extends Homey.Device {
     console.log("refreshToken " + refreshToken);
     console.log("id " + unitID);
     let resp = await apis.getDevice(accessToken)
-    if(resp.message == 'Unauthenticated.'){
-     const res = await apis.getRefreshToken(refreshToken)
-     console.log('log from refresh token')
+    if (resp.message == 'Unauthenticated.') {
+      const res = await apis.getRefreshToken(refreshToken)
+      console.log('log from refresh token')
       this.homey.settings.set('access_token', res.access_token, function (err) {
         if (err) return Homey.alert(err);
-    });
-    this.homey.settings.set('refresh_token', res.refresh_token, function (err) {
+      });
+      this.homey.settings.set('refresh_token', res.refresh_token, function (err) {
         if (err) return Homey.alert(err);
-    });
+      });
 
-   resp = await apis.getDevice(res.access_token)
+      resp = await apis.getDevice(res.access_token)
     }
     const meta = getContractData(resp.data.address_groups, unitID)
-   // console.log("meta data ", meta)
-    if(meta){
-      this.setValues(meta)                 
+    // console.log("meta data ", meta)
+    if (meta) {
+      this.setValues(meta)
     }
   }
 }
