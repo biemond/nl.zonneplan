@@ -10,9 +10,9 @@ class MyZonneplanApp extends Homey.App {
   }
 
   async activate(email) {
-  const res =  await fetch('https://app-api.zonneplan.nl/auth/request', {
+    const res = await fetch('https://app-api.zonneplan.nl/auth/request', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       referrerPolicy: "no-referrer",
       credentials: "include",
       body: JSON.stringify({ email: email }),
@@ -22,10 +22,10 @@ class MyZonneplanApp extends Homey.App {
   }
 
   async getOTP(uuid) {
-    console.log('uuid value ',uuid)
-  const res =  await fetch('https://app-api.zonneplan.nl/auth/request/'+uuid, {
+    console.log('uuid value ', uuid)
+    const res = await fetch('https://app-api.zonneplan.nl/auth/request/' + uuid, {
       method: 'GET',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       referrerPolicy: "no-referrer",
       credentials: "include",
     });
@@ -33,20 +33,20 @@ class MyZonneplanApp extends Homey.App {
     return resp;
   }
 
-  async getToken(email,password) {
+  async getToken(email, password) {
     let url = 'https://app-api.zonneplan.nl/oauth/token';
     console.log('making call to get token')
-    const res =  await fetch(url, {
+    const res = await fetch(url, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       referrerPolicy: "no-referrer",
       credentials: "include",
-      body: JSON.stringify({ email: email,password:password,grant_type: "one_time_password" }),
+      body: JSON.stringify({ email: email, password: password, grant_type: "one_time_password" }),
     });
     const resp = await res.json();
-        console.log('we got token ',resp)
-   return resp;
- }
+    console.log('we got token ', resp)
+    return resp;
+  }
 
 }
 

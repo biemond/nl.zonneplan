@@ -43,7 +43,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
   } // end onDeleted
 
   validResult(entry) {
-    if (entry) {
+    if (entry || entry == 0) {
       return true;
     }
     return false;
@@ -107,7 +107,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
       resp = await apis.getDevice(res.access_token)
     }
     const meta = getContractData(resp.data.address_groups, unitID)
-    // console.log("meta data ", meta)
+    console.log("meta data ", meta)
     if (meta) {
       this.setValues(meta)
     }
