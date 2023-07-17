@@ -3,7 +3,7 @@
 const Homey = require('homey');
 const apis = require('./api.js');
 
-const RETRY_INTERVAL = 300 * 1000;
+const RETRY_INTERVAL = 100 * 1000;
 let timer;
 
 module.exports = class SolarplanDevice extends Homey.Device {
