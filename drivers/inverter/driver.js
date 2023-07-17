@@ -17,13 +17,18 @@ module.exports = class SolarplanDriver extends Homey.Driver {
     let dataObject = {}
     session.setHandler("list_devices", async function () {
       if (accessToken == null || refreshToken == null) {
-        new Error('Please activate email 1st in the app settings!');
+        new Error('Please activate tokens!');
         return [];
       } else {
 
         let devices = [];
 
         const resp = await apis.getDevice(accessToken)
+        console.log(resp.message)
+        if(resp.message == 'Unauthenticated.'){
+          new Error('Please activate tokens!');
+        return [];
+        }
         dataObject.contractUUID = getContractUUID(resp.data.address_groups);
 
         var device = {

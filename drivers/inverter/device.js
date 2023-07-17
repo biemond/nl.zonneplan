@@ -49,19 +49,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     return false;
   }
 
-  async pollInvertor() {
-    this.log("pollInvertor");
-
-    let accessToken = this.homey.settings.get('access_token')
-    let refreshToken = this.homey.settings.get('refresh_token')
-
-    var unitID = this.getData().id;
-    console.log("accessToken " + accessToken);
-    console.log("refreshToken " + refreshToken);
-    console.log("id " + unitID);
-    const resp = await apis.getDevice(accessToken)
-    const meta = getContractData(resp.data.address_groups, unitID)
-    console.log("meta data ", meta)
+  setValues(meta){
     if (this.validResult(meta['last_measured_power_value'])) {
       this.addCapability('measure_power');
       var power = meta['last_measured_power_value'];
@@ -92,7 +80,37 @@ module.exports = class SolarplanDevice extends Homey.Device {
       this.addCapability('panel_count');
       var panel = meta['panel_count'];
       this.setCapabilityValue('panel_count', panel);
-    }                      
+    } 
+  }
+
+  async pollInvertor() {
+    this.log("pollInvertor");
+
+    let accessToken = this.homey.settings.get('access_token')
+    let refreshToken = this.homey.settings.get('refresh_token')
+
+    var unitID = this.getData().id;
+    console.log("accessToken " + accessToken);
+    console.log("refreshToken " + refreshToken);
+    console.log("id " + unitID);
+    let resp = await apis.getDevice(accessToken)
+    if(resp.message == 'Unauthenticated.'){
+     const res = await apis.getRefreshToken(refreshToken)
+     console.log('log from refresh token')
+      this.homey.settings.set('access_token', res.access_token, function (err) {
+        if (err) return Homey.alert(err);
+    });
+    this.homey.settings.set('refresh_token', res.refresh_token, function (err) {
+        if (err) return Homey.alert(err);
+    });
+
+   resp = await apis.getDevice(res.access_token)
+    }
+    const meta = getContractData(resp.data.address_groups, unitID)
+   // console.log("meta data ", meta)
+    if(meta){
+      this.setValues(meta)                 
+    }
   }
 }
 
