@@ -1,7 +1,7 @@
 {
     "type": "string",
     "title": {
-        "en": "Last update"
+        "en": "Last update UTC"
     },
     "getable": true,
     "setable": false,
