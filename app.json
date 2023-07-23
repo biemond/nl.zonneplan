@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#20df30",
@@ -12,7 +12,7 @@
     "en": "Zonneplan"
   },
   "description": {
-    "en": "Zonneplan inverter"
+    "en": "Giving back to the planet with Zonneplan"
   },
   "category": [
     "energy"
@@ -57,7 +57,7 @@
   "drivers": [
     {
       "name": {
-        "en": "inverter"
+        "en": "Solar"
       },
       "class": "solarpanel",
       "capabilities": [
@@ -75,8 +75,8 @@
         "cloud"
       ],
       "images": {
-        "small": "/drivers/inverter/assets/images/small.jpg",
-        "large": "/drivers/inverter/assets/images/large.jpg",
+        "small": "/drivers/inverter/assets/images/small.png",
+        "large": "/drivers/inverter/assets/images/large.png",
         "xlarge": "/drivers/inverter/assets/images/xlarge.png"
       },
       "pair": [

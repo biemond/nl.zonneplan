@@ -1,6 +1,6 @@
 {
   "name": {
-    "en": "inverter"
+    "en": "Solar"
   },
   "class": "solarpanel",
   "capabilities": [
@@ -18,8 +18,8 @@
     "cloud"
   ],
   "images": {
-    "small": "{{driverAssetsPath}}/images/small.jpg",
-    "large": "{{driverAssetsPath}}/images/large.jpg",
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
     "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
   },
   "pair": [
