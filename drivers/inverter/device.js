@@ -103,7 +103,6 @@ module.exports = class SolarplanDevice extends Homey.Device {
       this.homey.settings.set('refresh_token', res.refresh_token, function (err) {
         if (err) return Homey.alert(err);
       });
-
       resp = await apis.getDevice(res.access_token)
     }
     const meta = getContractData(resp.data.address_groups, unitID)
