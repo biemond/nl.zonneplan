@@ -114,16 +114,21 @@ module.exports = class SolarplanDevice extends Homey.Device {
 }
 
 function getContractData(arrayOfGroups, id) {
+  console.log('contract ',id);
   const filteredData = arrayOfGroups.map((element) => {
     return {
       connections: element.connections.map((connection) => {
         return { contracts: connection.contracts.find((contract) => contract.uuid == id) }
       }
-
       )
     }
   })
-
-  return filteredData[0].connections[0].contracts.meta
+  for (var i = 0; i < filteredData.length; i++) {
+    // console.log('List of contract ', filteredData[i].connections[0].contracts);
+    if (filteredData[i].connections[0].contracts){
+      console.log('List of contract ', filteredData[i].connections[0].contracts.meta);
+      return filteredData[i].connections[0].contracts.meta
+    }
+  }  
 
 }

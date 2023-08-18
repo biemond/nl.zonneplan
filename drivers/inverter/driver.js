@@ -29,19 +29,24 @@ module.exports = class SolarplanDriver extends Homey.Driver {
           new Error('Please activate tokens!');
         return [];
         }
-        dataObject.contractUUID = getContractUUID(resp.data.address_groups);
+        dataObject.contractUUIDs = await getContractUUID(resp.data.address_groups);
+        // console.log('List of contract ', dataObject.contractUUIDs[0].connections[0]);
+        // console.log('List of contract ', dataObject.contractUUIDs[1].connections[0]);
+        console.log('Length ', dataObject.contractUUIDs.length);
+        for (var i = 0; i < dataObject.contractUUIDs.length; i++) {
 
-        var device = {
-          name: dataObject.contractUUID,
-          data: {
-            id: dataObject.contractUUID,
-            name: dataObject.contractUUID
-          }
-        };
+          console.log('List of driver device ', dataObject.contractUUIDs[i].connections[0]);
+          var device = {
+            name: dataObject.contractUUIDs[i].connections[0].contracts.uuid,
+            data: {
+              id: dataObject.contractUUIDs[i].connections[0].contracts.uuid,
+              name: dataObject.contractUUIDs[i].connections[0].contracts.uuid
+            }
+          };
 
-        devices.push(device);
-
-        // console.log('List of devices ',devices);
+          devices.push(device);
+        }
+        console.log('List of driver devices ',devices);
         return devices;
       }
     });
@@ -58,7 +63,6 @@ function getContractUUID(arrayOfGroups) {
       )
     }
   })
-
-  return filteredData[0].connections[0].contracts.uuid
-
+  console.log('List of devices ',filteredData);
+  return filteredData
 }
