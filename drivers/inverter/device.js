@@ -105,16 +105,18 @@ module.exports = class SolarplanDevice extends Homey.Device {
       });
       resp = await apis.getDevice(res.access_token)
     }
-    const meta = getContractData(resp.data.address_groups, unitID)
-    console.log("meta data ", meta)
-    if (meta) {
-      this.setValues(meta)
+    if (resp.data.address_groups) {
+      const meta = getContractData(resp.data.address_groups, unitID)
+      console.log("meta data ", meta)
+      if (meta) {
+        this.setValues(meta)
+      }
     }
   }
 }
 
 function getContractData(arrayOfGroups, id) {
-  console.log('contract ',id);
+  console.log('contract ', id);
   const filteredData = arrayOfGroups.map((element) => {
     return {
       connections: element.connections.map((connection) => {
@@ -125,10 +127,10 @@ function getContractData(arrayOfGroups, id) {
   })
   for (var i = 0; i < filteredData.length; i++) {
     // console.log('List of contract ', filteredData[i].connections[0].contracts);
-    if (filteredData[i].connections[0].contracts){
+    if (filteredData[i].connections[0].contracts) {
       console.log('List of contract ', filteredData[i].connections[0].contracts.meta);
       return filteredData[i].connections[0].contracts.meta
     }
-  }  
+  }
 
 }
