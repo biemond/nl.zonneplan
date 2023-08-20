@@ -1,5 +1,8 @@
 const Homey = require('homey');
 
+
+const fetch = require('node-fetch');
+
 class MyZonneplanApp extends Homey.App {
 
   /**

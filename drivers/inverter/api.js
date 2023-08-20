@@ -1,5 +1,7 @@
 'use strict';
 
+const fetch = require('node-fetch');
+
 module.exports = {
     async getDevice(token) {
         let url = 'https://app-api.zonneplan.nl/user-accounts/me';
