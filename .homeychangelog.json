@@ -4,5 +4,8 @@
   },
   "1.0.5": {
     "en": "fix registration issue"
-  }  
+  },
+  "1.0.6": {
+    "en": "fix multi contract issue"
+  }      
 }

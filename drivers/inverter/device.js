@@ -126,10 +126,13 @@ function getContractData(arrayOfGroups, id) {
     }
   })
   for (var i = 0; i < filteredData.length; i++) {
-    // console.log('List of contract ', filteredData[i].connections[0].contracts);
-    if (filteredData[i].connections[0].contracts) {
-      console.log('List of contract ', filteredData[i].connections[0].contracts.meta);
-      return filteredData[i].connections[0].contracts.meta
+    console.log('List of contract ', filteredData[i].connections);
+    for (var a = 0; a < filteredData[i].connections.length; a++) {
+      if ( filteredData[i].connections[a].contracts ){
+        console.log('contract ', filteredData[i].connections[a]);
+        console.log('List of contract ', filteredData[i].connections[a].contracts.meta);
+        return filteredData[i].connections[a].contracts.meta
+      }  
     }
   }
 
