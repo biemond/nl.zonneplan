@@ -1,6 +1,6 @@
 {
   "id": "nl.zonneplan",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#20df30", 
@@ -19,11 +19,15 @@
   "tags": {
     "en": [
       "inverter",
-      "solar"
+      "solar",
+      "p1",
+      "smart meter"
     ],
     "nl": [
       "omvormer",
-      "zonnepanelen"
+      "zonnepanelen",
+      "p1",
+      "slimme meter"
     ]
   },
   "permissions": [],
