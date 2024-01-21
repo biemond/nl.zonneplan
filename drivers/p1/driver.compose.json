@@ -1,0 +1,63 @@
+{
+  "name": {
+    "en": "P1"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "measure_power",
+    "measure_power.delivery",
+    "measure_power.production",            
+    "lastmeasured",
+    "lastmeasured_production"
+  ],
+  "capabilitiesOptions": {
+    "measure_power": {
+      "decimals": 0,
+      "title": {
+        "en": "P1 power average"
+      }
+    },
+    "measure_power.delivery": {
+      "decimals": 0,
+      "title": {
+        "en": "P1 delivery power"
+      }
+    },
+    "measure_power.production": {
+      "decimals": 0,
+      "title": {
+        "en": "P1 production power"
+      }
+    }
+  },    
+  "energy": {
+    "cumulative": true
+  },  
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      },
+      "options": {
+        "singular": true
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]  
+}

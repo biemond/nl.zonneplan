@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#20df30",
@@ -96,6 +96,70 @@
         }
       ],
       "id": "inverter"
+    },
+    {
+      "name": {
+        "en": "P1"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_power",
+        "measure_power.delivery",
+        "measure_power.production",
+        "lastmeasured",
+        "lastmeasured_production"
+      ],
+      "capabilitiesOptions": {
+        "measure_power": {
+          "decimals": 0,
+          "title": {
+            "en": "P1 power average"
+          }
+        },
+        "measure_power.delivery": {
+          "decimals": 0,
+          "title": {
+            "en": "P1 delivery power"
+          }
+        },
+        "measure_power.production": {
+          "decimals": 0,
+          "title": {
+            "en": "P1 production power"
+          }
+        }
+      },
+      "energy": {
+        "cumulative": true
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "images": {
+        "small": "/drivers/p1/assets/images/small.png",
+        "large": "/drivers/p1/assets/images/large.png",
+        "xlarge": "/drivers/p1/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          },
+          "options": {
+            "singular": true
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "p1"
     }
   ],
   "capabilities": {
@@ -103,6 +167,16 @@
       "type": "string",
       "title": {
         "en": "Last update UTC"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "uiQuickAction": false
+    },
+    "lastmeasured_production": {
+      "type": "string",
+      "title": {
+        "en": "Last update production UTC"
       },
       "getable": true,
       "setable": false,

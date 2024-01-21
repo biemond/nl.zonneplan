@@ -1,0 +1,10 @@
+{
+    "type": "string",
+    "title": {
+        "en": "Last update production UTC"
+    },
+    "getable": true,
+    "setable": false,
+    "uiComponent": "sensor",
+    "uiQuickAction": false
+}
