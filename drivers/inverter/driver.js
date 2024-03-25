@@ -30,6 +30,9 @@ module.exports = class SolarplanDriver extends Homey.Driver {
         return [];
         }
         dataObject.contractUUIDs = await getContractUUID(resp.data.address_groups);
+
+        // console.log('response ',resp.data.address_groups);
+
         // console.log('List of contract ', dataObject.contractUUIDs[0].connections[0]);
         // console.log('List of contract ', dataObject.contractUUIDs[1].connections[0]);
         console.log('Length ', dataObject.contractUUIDs.length);
@@ -37,17 +40,18 @@ module.exports = class SolarplanDriver extends Homey.Driver {
           console.log('List of driver ', dataObject.contractUUIDs[i]);
           console.log('Length ', dataObject.contractUUIDs[i].connections.length);
           for (var a = 0; a < dataObject.contractUUIDs[i].connections.length; a++) {
-            if ( dataObject.contractUUIDs[i].connections[a].contracts ){
-              console.log('List of driver device ', dataObject.contractUUIDs[i].connections[a]);
-              var device = {
-                name: dataObject.contractUUIDs[i].connections[a].contracts.uuid,
-                data: {
-                  id: dataObject.contractUUIDs[i].connections[a].contracts.uuid,
-                  name: dataObject.contractUUIDs[i].connections[a].contracts.uuid
-                }
-              };
-
+            for (var b = 0; b < dataObject.contractUUIDs[i].connections[a].contracts.length; b++) {
+              if (dataObject.contractUUIDs[i].connections[a].contracts[b]) {
+                console.log('List of driver contract device ', dataObject.contractUUIDs[i].connections[a].contracts[b]);
+                var device = {
+                    name: dataObject.contractUUIDs[i].connections[a].contracts[b].uuid,
+                    data: {
+                        id: dataObject.contractUUIDs[i].connections[a].contracts[b].uuid,
+                        name: dataObject.contractUUIDs[i].connections[a].contracts[b].uuid
+                    }
+                };
               devices.push(device);
+            }
             }
           }
         }
@@ -62,7 +66,7 @@ function getContractUUID(arrayOfGroups) {
   const filteredData = arrayOfGroups.map((element) => {
     return {
       connections: element.connections.map((connection) => {
-        return { contracts: connection.contracts.find((contract) => contract.type == 'pv_installation') }
+        return { contracts: connection.contracts.filter((contract) => contract.type == 'pv_installation') }
       }
 
       )

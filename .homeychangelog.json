@@ -10,5 +10,8 @@
   },
   "1.0.8": {
     "en": "p1 meter device"
-  }           
+  },
+  "1.0.9": {
+    "en": "fix multi contract issue"
+  }                
 }
