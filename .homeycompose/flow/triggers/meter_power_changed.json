@@ -1,0 +1,44 @@
+{
+    "title": {
+      "en": "The power meter changed",
+      "nl": "De stroommeter is veranderd",
+      "de": "Der Gesamtverbrauch hat sich geändert",
+      "fr": "Le compteur électrique a changé",
+      "it": "Il misuratore di potenza è cambiato",
+      "sv": "Elmätaren ändrades",
+      "no": "Strømmåleren ble endret",
+      "es": "El contador de energía ha cambiado",
+      "da": "Strømmåleren ændrede sig",
+      "ru": "Измерения счетчика электроэнергии изменились",
+      "pl": "Zmiana w liczniku mocy",
+      "ko": "전력 계량 변경됨"
+    },
+    "tokens": [
+      {
+        "name": "meter_power",
+        "title": {
+          "en": "Energy",
+          "nl": "Energie",
+          "de": "Energie",
+          "fr": "Énergie",
+          "it": "Energia",
+          "sv": "Energi",
+          "no": "Energi",
+          "es": "Energía",
+          "da": "Energi",
+          "ru": "Электроэнергия",
+          "pl": "Energia",
+          "ko": "에너지"
+        },
+        "type": "number",
+        "example": 25
+      }
+    ],
+    "args": [
+        {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=inverter"
+        }
+    ]    
+}    

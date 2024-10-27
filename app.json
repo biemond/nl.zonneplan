@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#20df30",
@@ -57,6 +57,101 @@
       "method": "POST",
       "path": "/token/"
     }
+  },
+  "flow": {
+    "triggers": [
+      {
+        "highlight": true,
+        "title": {
+          "en": "The power changed",
+          "nl": "Het vermogen is veranderd",
+          "de": "Der Verbrauch hat sich gändert",
+          "fr": "L'énergie a changé",
+          "it": "L'energia è cambiata",
+          "sv": "Strömmen ändrades",
+          "no": "Strømmen ble endret",
+          "es": "La potencia ha cambiado",
+          "da": "Strømmen ændrede sig",
+          "ru": "Электроэнергия изменена",
+          "pl": "Zmiana mocy",
+          "ko": "전력 변경됨"
+        },
+        "tokens": [
+          {
+            "name": "measure_power",
+            "title": {
+              "en": "Power",
+              "nl": "Vermogen",
+              "de": "Leistung",
+              "fr": "Puissance",
+              "it": "Potenza",
+              "sv": "Effekt",
+              "no": "Effekt",
+              "es": "Potencia",
+              "da": "Effekt",
+              "ru": "Электроэнергия",
+              "pl": "Moc",
+              "ko": "전력"
+            },
+            "type": "number",
+            "example": 7.5
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=inverter|p1"
+          }
+        ],
+        "id": "measure_power_changed"
+      },
+      {
+        "title": {
+          "en": "The power meter changed",
+          "nl": "De stroommeter is veranderd",
+          "de": "Der Gesamtverbrauch hat sich geändert",
+          "fr": "Le compteur électrique a changé",
+          "it": "Il misuratore di potenza è cambiato",
+          "sv": "Elmätaren ändrades",
+          "no": "Strømmåleren ble endret",
+          "es": "El contador de energía ha cambiado",
+          "da": "Strømmåleren ændrede sig",
+          "ru": "Измерения счетчика электроэнергии изменились",
+          "pl": "Zmiana w liczniku mocy",
+          "ko": "전력 계량 변경됨"
+        },
+        "tokens": [
+          {
+            "name": "meter_power",
+            "title": {
+              "en": "Energy",
+              "nl": "Energie",
+              "de": "Energie",
+              "fr": "Énergie",
+              "it": "Energia",
+              "sv": "Energi",
+              "no": "Energi",
+              "es": "Energía",
+              "da": "Energi",
+              "ru": "Электроэнергия",
+              "pl": "Energia",
+              "ko": "에너지"
+            },
+            "type": "number",
+            "example": 25
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=inverter"
+          }
+        ],
+        "id": "meter_power_changed"
+      }
+    ]
   },
   "drivers": [
     {

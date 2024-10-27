@@ -13,5 +13,8 @@
   },
   "1.0.9": {
     "en": "fix multi contract issue"
-  }                
+  },
+  "1.0.10": {
+    "en": "default triggers"
+  }                      
 }
