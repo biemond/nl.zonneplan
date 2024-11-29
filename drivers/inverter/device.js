@@ -83,9 +83,14 @@ module.exports = class SolarplanDevice extends Homey.Device {
     }
   }
 
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
   async pollInvertor() {
     this.log("pollInvertor");
-
+    await this.delay(5000);
     let accessToken = this.homey.settings.get('access_token')
     let refreshToken = this.homey.settings.get('refresh_token')
 
@@ -105,7 +110,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
       });
       resp = await apis.getDevice(res.access_token)
     }
-    if (resp.data.address_groups) {
+    if (typeof(resp.data.address_groups) !== 'undefined') {
       const meta = getContractData(resp.data.address_groups, unitID)
       console.log("meta data ", meta)
       if (meta) {

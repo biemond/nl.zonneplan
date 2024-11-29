@@ -16,5 +16,8 @@
   },
   "1.0.10": {
     "en": "default triggers"
-  }                      
+  },
+  "1.0.12": {
+    "en": "add delay on startup, fix address_group issue"
+  }                          
 }
