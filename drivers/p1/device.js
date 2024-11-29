@@ -100,7 +100,7 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       });
       resp = await apis.getDevice(res.access_token)
     }
-    if (resp.data.address_groups) {
+    if (typeof(resp.data.address_groups) !== 'undefined') {
       const meta = getContractData(resp.data.address_groups, unitID)
       console.log("meta data ", meta)
       if (meta) {
