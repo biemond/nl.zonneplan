@@ -25,5 +25,14 @@
   },
   "1.0.14": {
     "en": "add delay on startup, fix address_group issue, also on p1"
-  }                                 
+  },
+  "1.0.15": {
+    "en": "add delay on startup, fix address_group issue, also on p1"
+  },
+  "1.0.16": {
+    "en": "total yield with 2 decimal"
+  },
+  "1.0.17": {
+    "en": "p1 gas and electricy caps"
+  }                                               
 }

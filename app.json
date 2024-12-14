@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
-  "version": "1.0.14",
+  "version": "1.0.17",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#20df30",
@@ -206,7 +206,13 @@
         "measure_power.delivery",
         "measure_power.production",
         "lastmeasured",
-        "lastmeasured_production"
+        "lastmeasured_production",
+        "meter_gas.daily",
+        "meter_gas.daily_price",
+        "meter_gas.monthly",
+        "meter_gas.monthly_price",
+        "meter_gas.yearly",
+        "meter_gas.yearly_price"
       ],
       "capabilitiesOptions": {
         "measure_power": {
@@ -225,6 +231,51 @@
           "decimals": 0,
           "title": {
             "en": "P1 production power"
+          }
+        },
+        "meter_gas.daily": {
+          "decimals": 2,
+          "title": {
+            "en": "Gas daily"
+          }
+        },
+        "meter_gas.daily_price": {
+          "decimals": 2,
+          "title": {
+            "en": "Gas daily price"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_gas.monthly": {
+          "decimals": 2,
+          "title": {
+            "en": "Gas monthly"
+          }
+        },
+        "meter_gas.monthly_price": {
+          "decimals": 2,
+          "title": {
+            "en": "Gas monthly price"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_gas.yearly": {
+          "decimals": 2,
+          "title": {
+            "en": "Gas yearly"
+          }
+        },
+        "meter_gas.yearly_price": {
+          "decimals": 2,
+          "title": {
+            "en": "Gas yearly price"
+          },
+          "units": {
+            "en": "€"
           }
         }
       },
@@ -308,7 +359,7 @@
         "en": "Total Yield",
         "nl": "Totale opbrengst"
       },
-      "decimals": 0,
+      "decimals": 2,
       "units": {
         "en": "kWh"
       },

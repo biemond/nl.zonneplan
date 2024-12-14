@@ -14,6 +14,29 @@ module.exports = {
         return resp;
     },
 
+    async getGas(token,uuid) {
+        let url = 'https://app-api.zonneplan.nl/connections/'+uuid+'/gas';
+        console.log('making gas call to get device')
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', 'Authorization': 'Bearer ' + token }
+        });
+        const resp = await res.json();
+        return resp;
+    },
+
+    async getElec(token,uuid) {
+        let url = 'https://app-api.zonneplan.nl/connections/'+uuid+'/electricity-delivered';
+        console.log('making elec call to get device')
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', 'Authorization': 'Bearer ' + token }
+        });
+        const resp = await res.json();
+        return resp;
+    },
+
+    
     async getRefreshToken(token) {
         let url = 'https://app-api.zonneplan.nl/oauth/token';
         const res = await fetch(url, {

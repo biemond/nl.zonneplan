@@ -15,6 +15,25 @@ module.exports = class SolarplanP1Device extends Homey.Device {
     this.log("device name id " + name);
     this.log("device name " + this.getName());
 
+    if (this.hasCapability('meter_gas.daily') === false) {
+      await this.addCapability('meter_gas.daily');
+    }
+    if (this.hasCapability('meter_gas.daily_price') === false) {
+      await this.addCapability('meter_gas.daily_price');
+    }
+    if (this.hasCapability('meter_gas.monthly') === false) {
+      await this.addCapability('meter_gas.monthly');
+    }
+    if (this.hasCapability('meter_gas.monthly_price') === false) {
+      await this.addCapability('meter_gas.monthly_price');
+    }
+    if (this.hasCapability('meter_gas.yearly') === false) {
+      await this.addCapability('meter_gas.yearly');
+    }
+    if (this.hasCapability('meter_gas.yearly_price') === false) {
+      await this.addCapability('meter_gas.yearly_price');
+    }    
+
     this.pollP1();
 
     timer = this.homey.setInterval(() => {
@@ -22,7 +41,8 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       this.pollP1();
     }, RETRY_INTERVAL);
 
-    // this.pollInvertor();
+
+
   }
 
   async onAdded() {
@@ -65,7 +85,7 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       this.addCapability('measure_power.production');
       var power = meta['electricity_last_measured_production_value'];
       this.setCapabilityValue('measure_power.production', power);
-    }    
+    }
     if (this.validResult(meta['electricity_last_measured_at'])) {
       this.addCapability('lastmeasured');
       var date = meta['electricity_last_measured_at'].substring(0, 19);
@@ -100,11 +120,83 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       });
       resp = await apis.getDevice(res.access_token)
     }
-    if ( Object.hasOwn(resp.data,'address_groups')) {
+    if (resp !== undefined && resp.data !== undefined && Object.hasOwn(resp.data, 'address_groups')) {
+
       const meta = getContractData(resp.data.address_groups, unitID)
       console.log("meta data ", meta)
       if (meta) {
         this.setValues(meta)
+      }
+      const conn = getConnectionData(resp.data.address_groups, unitID)
+      console.log("conn data ", conn)
+      let respGas = await apis.getGas(accessToken, conn)
+      if (respGas !== undefined && respGas.data !== undefined) {
+        console.log("gas day m3 ",  respGas.data.measurement_groups[0].total/1000)
+        console.log("gas day price ",  respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax/10000000)
+        console.log("gas month m3 ",  respGas.data.measurement_groups[1].total/1000)
+        console.log("gas month price ",  respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
+        console.log("gas year m3 ",  respGas.data.measurement_groups[2].total/1000)
+        console.log("gas year price ", respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax/10000000)
+        if (this.validResult(respGas.data.measurement_groups[0].total)) {
+          this.addCapability('meter_gas.daily');
+          var gas = respGas.data.measurement_groups[0].total/1000;
+          this.setCapabilityValue('meter_gas.daily', gas);
+        }
+        if (this.validResult(respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax)) {
+          this.addCapability('meter_gas.daily_price');
+          var price =  respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax/10000000;
+          this.setCapabilityValue('meter_gas.daily_price', price);
+        }
+        if (this.validResult(respGas.data.measurement_groups[1].total)) {
+          this.addCapability('meter_gas.monthly');
+          var gas = respGas.data.measurement_groups[1].total/1000;
+          this.setCapabilityValue('meter_gas.monthly', gas);
+        }
+        if (this.validResult(respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax)) {
+          this.addCapability('meter_gas.monthly_price');
+          var price =  respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000;
+          this.setCapabilityValue('meter_gas.monthly_price', price);
+        }
+        if (this.validResult(respGas.data.measurement_groups[2].total)) {
+          this.addCapability('meter_gas.yearly');
+          var gas = respGas.data.measurement_groups[2].total/1000;
+          this.setCapabilityValue('meter_gas.yearly', gas);
+        }
+        if (this.validResult(respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax)) {
+          this.addCapability('meter_gas.yearly_price');
+          var price =  respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax/10000000;
+          this.setCapabilityValue('meter_gas.yearly_price', price);
+        }                
+      }
+      let respElec = await apis.getElec(accessToken, conn)
+      if (respElec !== undefined && respElec.data !== undefined) {
+
+        console.log("elec day kwh ",  respElec.data.measurement_groups[1].totals.d/1000)
+        console.log("elec day production kwh ",  respElec.data.measurement_groups[1].totals.p/1000)
+        console.log("elec day price ",  respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
+        console.log("elec day production price ",  respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000)
+
+        console.log("elec month kwh ",  respElec.data.measurement_groups[2].totals.d/1000)
+        console.log("elec month production kwh ",  respElec.data.measurement_groups[2].totals.p/1000)        
+        console.log("elec month price ",  respElec.data.measurement_groups[2].meta.delivery_costs_incl_tax/10000000)
+        console.log("elec month production price ",  respElec.data.measurement_groups[2].meta.production_costs_incl_tax/10000000)
+
+        console.log("elec year kwh ",  respElec.data.measurement_groups[3].totals.d/1000)
+        console.log("elec year production kwh ",  respElec.data.measurement_groups[3].totals.p/1000)        
+        console.log("elec year price ", respElec.data.measurement_groups[3].meta.delivery_costs_incl_tax/10000000)
+        console.log("elec year production price ", respElec.data.measurement_groups[3].meta.production_costs_incl_tax/10000000)
+        // console.log("elec data ", respElec.measurement_groups[0].total)
+
+
+          // key="electricity_data.measurement_groups.0.totals.d",
+
+          // key="electricity_data.measurement_groups.0.totals.p",
+
+          // key="electricity_data.measurement_groups.0.meta.delivery_costs_incl_tax",
+
+          // key="electricity_data.measurement_groups.0.meta.production_costs_incl_tax",
+
+
       }
     }
   }
@@ -112,23 +204,45 @@ module.exports = class SolarplanP1Device extends Homey.Device {
 
 function getContractData(arrayOfGroups, id) {
   console.log('contract ', id);
+
   const filteredData = arrayOfGroups.map((element) => {
     return {
       connections: element.connections.map((connection) => {
+        console.log('address uuid', connection.uuid)
         return { contracts: connection.contracts.find((contract) => contract.uuid == id) }
       }
       )
     }
   })
   for (var i = 0; i < filteredData.length; i++) {
-    console.log('List of contract ', filteredData[i].connections);
+
+    // console.log('List of contract ', filteredData[i].connections);
     for (var a = 0; a < filteredData[i].connections.length; a++) {
-      if ( filteredData[i].connections[a].contracts ){
-        console.log('contract ', filteredData[i].connections[a]);
-        console.log('List of contract ', filteredData[i].connections[a].contracts.meta);
+      if (filteredData[i].connections[a].contracts) {
+        // console.log('contract ', filteredData[i].connections[a]);
+        // console.log('List of contract ', filteredData[i].connections[a].contracts.meta);
         return filteredData[i].connections[a].contracts.meta
-      }  
+      }
     }
   }
+}
 
+
+function getConnectionData(arrayOfGroups, id) {
+  console.log('contract ', id);
+  // console.log('List of contract ', arrayOfGroups);
+  for (var i = 0; i < arrayOfGroups.length; i++) {
+    for (var a = 0; a < arrayOfGroups[i].connections.length; a++) {
+      // console.log('List of conn ', arrayOfGroups[i].connections[a]);
+      if (arrayOfGroups[i].connections[a].contracts) {
+        for (var n = 0; n < arrayOfGroups[i].connections[a].contracts.length; n++) {
+        // console.log('contract uudi ', arrayOfGroups[i].connections[a].contracts[n]);
+        if (arrayOfGroups[i].connections[a].contracts[n].uuid == id) {
+          console.log('connection uudi ', arrayOfGroups[i].connections[a].uuid);
+          return arrayOfGroups[i].connections[a].uuid
+        }
+      }
+      }
+    }
+  }
 }
