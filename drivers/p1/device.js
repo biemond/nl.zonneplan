@@ -18,7 +18,6 @@ module.exports = class SolarplanP1Device extends Homey.Device {
     if (this.hasCapability('meter_gas') === false) {
       await this.addCapability('meter_gas');
     }
-
     if (this.hasCapability('meter_gas.daily') === false) {
       await this.addCapability('meter_gas.daily');
     }
@@ -36,10 +35,10 @@ module.exports = class SolarplanP1Device extends Homey.Device {
     }
     if (this.hasCapability('meter_gas.yearly_price') === false) {
       await this.addCapability('meter_gas.yearly_price');
-    }    
+    }
 
     if (this.hasCapability('meter_power.daily_delivery') === false) {
-      await this.addCapability('"meter_power.daily_delivery');
+      await this.addCapability('meter_power.daily_delivery');
     }
     if (this.hasCapability('meter_power.daily_production') === false) {
       await this.addCapability('meter_power.daily_production');
@@ -55,7 +54,7 @@ module.exports = class SolarplanP1Device extends Homey.Device {
     }
     if (this.hasCapability('meter_power.daily_cost') === false) {
       await this.addCapability('meter_power.daily_cost');
-    }      
+    }
 
     if (this.hasCapability('meter_power.monthly_delivery') === false) {
       await this.addCapability('meter_power.monthly_delivery');
@@ -74,7 +73,7 @@ module.exports = class SolarplanP1Device extends Homey.Device {
     }
     if (this.hasCapability('meter_power.monthly_cost') === false) {
       await this.addCapability('meter_power.monthly_cost');
-    } 
+    }
 
     if (this.hasCapability('meter_power.yearly_delivery') === false) {
       await this.addCapability('meter_power.yearly_delivery');
@@ -93,7 +92,7 @@ module.exports = class SolarplanP1Device extends Homey.Device {
     }
     if (this.hasCapability('meter_power.yearly_cost') === false) {
       await this.addCapability('meter_power.yearly_cost');
-    } 
+    }
 
     this.pollP1();
 
@@ -192,52 +191,83 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       console.log("conn data ", conn)
       let respGas = await apis.getGas(accessToken, conn)
       if (respGas !== undefined && respGas.data !== undefined) {
-        console.log("gas day m3 ",  respGas.data.measurement_groups[0].total/1000)
-        console.log("gas day price ",  respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax/10000000)
-        console.log("gas month m3 ",  respGas.data.measurement_groups[1].total/1000)
-        console.log("gas month price ",  respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
-        console.log("gas year m3 ",  respGas.data.measurement_groups[2].total/1000)
-        console.log("gas year price ", respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax/10000000)
-        if (this.validResult(respGas.data.measurement_groups[0].total)) {
-          this.addCapability('meter_gas.daily');
-          var gas = respGas.data.measurement_groups[0].total/1000;
-          this.setCapabilityValue('meter_gas.daily', gas);
+        console.log(respGas.data);
+        console.log("gas day m3 ", respGas.data.measurement_groups[0].total / 1000)
+        console.log("gas day price ", respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000)
+        console.log("gas month m3 ", respGas.data.measurement_groups[1].total / 1000)
+        console.log("gas month price ", respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000)
+        console.log("gas year m3 ", respGas.data.measurement_groups[2].total / 1000)
+        console.log("gas year price ", respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000)
+
+        console.log(respGas.data.measurement_groups[0].measurements.length);
+        if (respGas.data.measurement_groups[0].measurements.length == 0) {
+          console.log('remove gas caps');
+          if (this.hasCapability('meter_gas') === true) {
+            await this.removeCapability('meter_gas');
+          }
+
+          if (this.hasCapability('meter_gas.daily') === true) {
+            await this.removeCapability('meter_gas.daily');
+          }
+          if (this.hasCapability('meter_gas.daily_price') === true) {
+            await this.removeCapability('meter_gas.daily_price');
+          }
+          if (this.hasCapability('meter_gas.monthly') === true) {
+            await this.removeCapability('meter_gas.monthly');
+          }
+          if (this.hasCapability('meter_gas.monthly_price') === true) {
+            await this.removeCapability('meter_gas.monthly_price');
+          }
+          if (this.hasCapability('meter_gas.yearly') === true) {
+            await this.removeCapability('meter_gas.yearly');
+          }
+          if (this.hasCapability('meter_gas.yearly_price') === true) {
+            await this.removeCapability('meter_gas.yearly_price');
+          }
+
+        } else {
+
+          if (this.validResult(respGas.data.measurement_groups[0].total)) {
+            this.addCapability('meter_gas.daily');
+            var gas = respGas.data.measurement_groups[0].total / 1000;
+            this.setCapabilityValue('meter_gas.daily', gas);
+          }
+          if (this.validResult(respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax)) {
+            this.addCapability('meter_gas.daily_price');
+            var price = respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000;
+            this.setCapabilityValue('meter_gas.daily_price', price);
+          }
+          if (this.validResult(respGas.data.measurement_groups[1].total)) {
+            this.addCapability('meter_gas.monthly');
+            var gas = respGas.data.measurement_groups[1].total / 1000;
+            this.setCapabilityValue('meter_gas.monthly', gas);
+          }
+          if (this.validResult(respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax)) {
+            this.addCapability('meter_gas.monthly_price');
+            var price = respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
+            this.setCapabilityValue('meter_gas.monthly_price', price);
+          }
+          if (this.validResult(respGas.data.measurement_groups[2].total)) {
+            this.addCapability('meter_gas.yearly');
+            this.addCapability('meter_gas');
+            var gas = respGas.data.measurement_groups[2].total / 1000;
+            this.setCapabilityValue('meter_gas.yearly', gas);
+            this.setCapabilityValue('meter_gas', gas);
+          }
+          if (this.validResult(respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax)) {
+            this.addCapability('meter_gas.yearly_price');
+            var price = respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000;
+            this.setCapabilityValue('meter_gas.yearly_price', price);
+          }
         }
-        if (this.validResult(respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax)) {
-          this.addCapability('meter_gas.daily_price');
-          var price =  respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax/10000000;
-          this.setCapabilityValue('meter_gas.daily_price', price);
-        }
-        if (this.validResult(respGas.data.measurement_groups[1].total)) {
-          this.addCapability('meter_gas.monthly');
-          var gas = respGas.data.measurement_groups[1].total/1000;
-          this.setCapabilityValue('meter_gas.monthly', gas);
-        }
-        if (this.validResult(respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax)) {
-          this.addCapability('meter_gas.monthly_price');
-          var price =  respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000;
-          this.setCapabilityValue('meter_gas.monthly_price', price);
-        }
-        if (this.validResult(respGas.data.measurement_groups[2].total)) {
-          this.addCapability('meter_gas.yearly');
-          this.addCapability('meter_gas');
-          var gas = respGas.data.measurement_groups[2].total/1000;
-          this.setCapabilityValue('meter_gas.yearly', gas);
-          this.setCapabilityValue('meter_gas', gas);
-        }
-        if (this.validResult(respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax)) {
-          this.addCapability('meter_gas.yearly_price');
-          var price =  respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax/10000000;
-          this.setCapabilityValue('meter_gas.yearly_price', price);
-        }                
       }
       let respElec = await apis.getElec(accessToken, conn)
       if (respElec !== undefined && respElec.data !== undefined) {
 
-        // console.log("elec day delivery kwh ",  respElec.data.measurement_groups[1].totals.d/1000)
-        // console.log("elec day production kwh ",  respElec.data.measurement_groups[1].totals.p/1000)
-        // console.log("elec day delivery cost ",  respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
-        // console.log("elec day production cost ",  respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000)
+        console.log("elec day delivery kwh ",  respElec.data.measurement_groups[1].totals.d/1000)
+        console.log("elec day production kwh ",  respElec.data.measurement_groups[1].totals.p/1000)
+        console.log("elec day delivery cost ",  respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
+        console.log("elec day production cost ",  respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000)
 
         // console.log("elec month delivery kwh ",  respElec.data.measurement_groups[2].totals.d/1000)
         // console.log("elec month production kwh ",  respElec.data.measurement_groups[2].totals.p/1000)        
@@ -249,109 +279,109 @@ module.exports = class SolarplanP1Device extends Homey.Device {
         // console.log("elec year delivery cost ", respElec.data.measurement_groups[3].meta.delivery_costs_incl_tax/10000000)
         // console.log("elec year production cost ", respElec.data.measurement_groups[3].meta.production_costs_incl_tax/10000000)
 
- 
+
         if (this.validResult(respElec.data.measurement_groups[1].totals.d)) {
           this.addCapability('meter_power.daily_delivery');
-          var prod = respElec.data.measurement_groups[1].totals.d/1000;
+          var prod = respElec.data.measurement_groups[1].totals.d / 1000;
           this.setCapabilityValue('meter_power.daily_delivery', prod);
         }
         if (this.validResult(respElec.data.measurement_groups[1].totals.p)) {
           this.addCapability('meter_power.daily_production');
-          var prod =  respElec.data.measurement_groups[1].totals.p/1000;
+          var prod = respElec.data.measurement_groups[1].totals.p / 1000;
           this.setCapabilityValue('meter_power.daily_production', prod);
         }
         // if (this.validResult(respElec.data.measurement_groups[1].totals.d) && this.validResult(respElec.data.measurement_groups[1].totals.p)) {
-          this.addCapability('meter_power.daily');
-          var delivery = respElec.data.measurement_groups[1].totals.d/1000;
-          var prod     = respElec.data.measurement_groups[1].totals.p/1000;
-          this.setCapabilityValue('meter_power.daily', delivery - prod );
+        this.addCapability('meter_power.daily');
+        var delivery = respElec.data.measurement_groups[1].totals.d / 1000;
+        var prod = respElec.data.measurement_groups[1].totals.p / 1000;
+        this.setCapabilityValue('meter_power.daily', delivery - prod);
         // }
 
         if (this.validResult(respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax)) {
           this.addCapability('meter_power.daily_delivery_cost');
-          var cost = respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000;
+          var cost = respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
           this.setCapabilityValue('meter_power.daily_delivery_cost', cost);
         }
         if (this.validResult(respElec.data.measurement_groups[1].meta.production_costs_incl_tax)) {
           this.addCapability('meter_power.daily_production_cost');
-          var cost =  respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000;
+          var cost = respElec.data.measurement_groups[1].meta.production_costs_incl_tax / 10000000;
           this.setCapabilityValue('meter_power.daily_production_cost', cost);
         }
         // if (this.validResult(respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax) && this.validResult(respElec.data.measurement_groups[1].meta.production_costs_incl_tax)) {
-          this.addCapability('meter_power.daily_cost');
-          var cost  = respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000;
-          var cost2 = respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000;
-          this.setCapabilityValue('meter_power.daily_cost',  cost - cost2);
+        this.addCapability('meter_power.daily_cost');
+        var cost = respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
+        var cost2 = respElec.data.measurement_groups[1].meta.production_costs_incl_tax / 10000000;
+        this.setCapabilityValue('meter_power.daily_cost', cost - cost2);
         // }
 
- 
+
         if (this.validResult(respElec.data.measurement_groups[2].totals.d)) {
           this.addCapability('meter_power.monthly_delivery');
-          var prod = respElec.data.measurement_groups[2].totals.d/1000;
+          var prod = respElec.data.measurement_groups[2].totals.d / 1000;
           this.setCapabilityValue('meter_power.monthly_delivery', prod);
         }
         if (this.validResult(respElec.data.measurement_groups[2].totals.p)) {
           this.addCapability('meter_power.monthly_production');
-          var prod =  respElec.data.measurement_groups[2].totals.p/1000;
+          var prod = respElec.data.measurement_groups[2].totals.p / 1000;
           this.setCapabilityValue('meter_power.monthly_production', prod);
         }
         // if (this.validResult(respElec.data.measurement_groups[1].totals.d) && this.validResult(respElec.data.measurement_groups[1].totals.p)) {
-          this.addCapability('meter_power.monthly');
-          var delivery = respElec.data.measurement_groups[2].totals.d/1000;
-          var prod     = respElec.data.measurement_groups[2].totals.p/1000;
-          this.setCapabilityValue('meter_power.monthly', delivery - prod );
+        this.addCapability('meter_power.monthly');
+        var delivery = respElec.data.measurement_groups[2].totals.d / 1000;
+        var prod = respElec.data.measurement_groups[2].totals.p / 1000;
+        this.setCapabilityValue('meter_power.monthly', delivery - prod);
         // }
 
         if (this.validResult(respElec.data.measurement_groups[2].meta.delivery_costs_incl_tax)) {
           this.addCapability('meter_power.monthly_delivery_cost');
-          var cost = respElec.data.measurement_groups[2].meta.delivery_costs_incl_tax/10000000;
+          var cost = respElec.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000;
           this.setCapabilityValue('meter_power.monthly_delivery_cost', cost);
         }
         if (this.validResult(respElec.data.measurement_groups[2].meta.production_costs_incl_tax)) {
           this.addCapability('meter_power.monthly_production_cost');
-          var cost =  respElec.data.measurement_groups[2].meta.production_costs_incl_tax/10000000;
+          var cost = respElec.data.measurement_groups[2].meta.production_costs_incl_tax / 10000000;
           this.setCapabilityValue('meter_power.monthly_production_cost', cost);
         }
         // if (this.validResult(respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax) && this.validResult(respElec.data.measurement_groups[1].meta.production_costs_incl_tax)) {
-          this.addCapability('meter_power.monthly_cost');
-          var cost  = respElec.data.measurement_groups[2].meta.delivery_costs_incl_tax/10000000;
-          var cost2 = respElec.data.measurement_groups[2].meta.production_costs_incl_tax/10000000;
-          this.setCapabilityValue('meter_power.monthly_cost',  cost - cost2);
+        this.addCapability('meter_power.monthly_cost');
+        var cost = respElec.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000;
+        var cost2 = respElec.data.measurement_groups[2].meta.production_costs_incl_tax / 10000000;
+        this.setCapabilityValue('meter_power.monthly_cost', cost - cost2);
         // }
 
- 
+
         if (this.validResult(respElec.data.measurement_groups[3].totals.d)) {
           this.addCapability('meter_power.yearly_delivery');
-          var prod = respElec.data.measurement_groups[3].totals.d/1000;
+          var prod = respElec.data.measurement_groups[3].totals.d / 1000;
           this.setCapabilityValue('meter_power.yearly_delivery', prod);
         }
         if (this.validResult(respElec.data.measurement_groups[3].totals.p)) {
           this.addCapability('meter_power.yearly_production');
-          var prod =  respElec.data.measurement_groups[3].totals.p/1000;
+          var prod = respElec.data.measurement_groups[3].totals.p / 1000;
           this.setCapabilityValue('meter_power.yearly_production', prod);
         }
         // if (this.validResult(respElec.data.measurement_groups[1].totals.d) && this.validResult(respElec.data.measurement_groups[1].totals.p)) {
-          this.addCapability('meter_power.yearly');
-          var delivery = respElec.data.measurement_groups[3].totals.d/1000;
-          var prod     = respElec.data.measurement_groups[3].totals.p/1000;
-          this.setCapabilityValue('meter_power.yearly', delivery - prod );
+        this.addCapability('meter_power.yearly');
+        var delivery = respElec.data.measurement_groups[3].totals.d / 1000;
+        var prod = respElec.data.measurement_groups[3].totals.p / 1000;
+        this.setCapabilityValue('meter_power.yearly', delivery - prod);
         // }
 
         if (this.validResult(respElec.data.measurement_groups[3].meta.delivery_costs_incl_tax)) {
           this.addCapability('meter_power.yearly_delivery_cost');
-          var cost = respElec.data.measurement_groups[3].meta.delivery_costs_incl_tax/10000000;
+          var cost = respElec.data.measurement_groups[3].meta.delivery_costs_incl_tax / 10000000;
           this.setCapabilityValue('meter_power.yearly_delivery_cost', cost);
         }
         if (this.validResult(respElec.data.measurement_groups[3].meta.production_costs_incl_tax)) {
           this.addCapability('meter_power.yearly_production_cost');
-          var cost =  respElec.data.measurement_groups[3].meta.production_costs_incl_tax/10000000;
+          var cost = respElec.data.measurement_groups[3].meta.production_costs_incl_tax / 10000000;
           this.setCapabilityValue('meter_power.yearly_production_cost', cost);
         }
         // if (this.validResult(respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax) && this.validResult(respElec.data.measurement_groups[1].meta.production_costs_incl_tax)) {
-          this.addCapability('meter_power.yearly_cost');
-          var cost  = respElec.data.measurement_groups[3].meta.delivery_costs_incl_tax/10000000;
-          var cost2 = respElec.data.measurement_groups[3].meta.production_costs_incl_tax/10000000;
-          this.setCapabilityValue('meter_power.yearly_cost',  cost - cost2);
+        this.addCapability('meter_power.yearly_cost');
+        var cost = respElec.data.measurement_groups[3].meta.delivery_costs_incl_tax / 10000000;
+        var cost2 = respElec.data.measurement_groups[3].meta.production_costs_incl_tax / 10000000;
+        this.setCapabilityValue('meter_power.yearly_cost', cost - cost2);
         // }
 
       }
@@ -393,12 +423,12 @@ function getConnectionData(arrayOfGroups, id) {
       // console.log('List of conn ', arrayOfGroups[i].connections[a]);
       if (arrayOfGroups[i].connections[a].contracts) {
         for (var n = 0; n < arrayOfGroups[i].connections[a].contracts.length; n++) {
-        // console.log('contract uudi ', arrayOfGroups[i].connections[a].contracts[n]);
-        if (arrayOfGroups[i].connections[a].contracts[n].uuid == id) {
-          console.log('connection uudi ', arrayOfGroups[i].connections[a].uuid);
-          return arrayOfGroups[i].connections[a].uuid
+          // console.log('contract uudi ', arrayOfGroups[i].connections[a].contracts[n]);
+          if (arrayOfGroups[i].connections[a].contracts[n].uuid == id) {
+            console.log('connection uudi ', arrayOfGroups[i].connections[a].uuid);
+            return arrayOfGroups[i].connections[a].uuid
+          }
         }
-      }
       }
     }
   }
