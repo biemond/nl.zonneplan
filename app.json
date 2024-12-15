@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#20df30",
@@ -207,12 +207,31 @@
         "measure_power.production",
         "lastmeasured",
         "lastmeasured_production",
+        "meter_gas",
         "meter_gas.daily",
         "meter_gas.daily_price",
         "meter_gas.monthly",
         "meter_gas.monthly_price",
         "meter_gas.yearly",
-        "meter_gas.yearly_price"
+        "meter_gas.yearly_price",
+        "meter_power.daily_delivery",
+        "meter_power.daily_production",
+        "meter_power.daily",
+        "meter_power.daily_delivery_cost",
+        "meter_power.daily_production_cost",
+        "meter_power.daily_cost",
+        "meter_power.monthy_delivery",
+        "meter_power.monthy_production",
+        "meter_power.monthy",
+        "meter_power.monthy_delivery_cost",
+        "meter_power.monthy_production_cost",
+        "meter_power.monthy_cost",
+        "meter_power.yearly_delivery",
+        "meter_power.yearly_production",
+        "meter_power.yearly",
+        "meter_power.yearly_delivery_cost",
+        "meter_power.yearly_production_cost",
+        "meter_power.yearly_cost"
       ],
       "capabilitiesOptions": {
         "measure_power": {
@@ -242,7 +261,7 @@
         "meter_gas.daily_price": {
           "decimals": 2,
           "title": {
-            "en": "Gas daily price"
+            "en": "Gas daily cost"
           },
           "units": {
             "en": "€"
@@ -257,7 +276,7 @@
         "meter_gas.monthly_price": {
           "decimals": 2,
           "title": {
-            "en": "Gas monthly price"
+            "en": "Gas monthly cost"
           },
           "units": {
             "en": "€"
@@ -272,7 +291,142 @@
         "meter_gas.yearly_price": {
           "decimals": 2,
           "title": {
-            "en": "Gas yearly price"
+            "en": "Gas yearly cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.daily_delivery": {
+          "decimals": 2,
+          "title": {
+            "en": "Delivery daily"
+          }
+        },
+        "meter_power.daily_production": {
+          "decimals": 2,
+          "title": {
+            "en": "Production daily"
+          }
+        },
+        "meter_power.daily": {
+          "decimals": 2,
+          "title": {
+            "en": "Total daily"
+          }
+        },
+        "meter_power.daily_delivery_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Delivery daily cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.daily_production_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Production daily cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.daily_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Daily cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.monthly_delivery": {
+          "decimals": 2,
+          "title": {
+            "en": "Delivery monthly"
+          }
+        },
+        "meter_power.monthly_production": {
+          "decimals": 2,
+          "title": {
+            "en": "Production monthly"
+          }
+        },
+        "meter_power.monthly": {
+          "decimals": 2,
+          "title": {
+            "en": "Total monthly"
+          }
+        },
+        "meter_power.monthly_delivery_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Delivery monthly cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.monthly_production_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Production monthly cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.monthly_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Monthly cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.yearly_delivery": {
+          "decimals": 2,
+          "title": {
+            "en": "Delivery yearly"
+          }
+        },
+        "meter_power.yearly_production": {
+          "decimals": 2,
+          "title": {
+            "en": "Production yearly"
+          }
+        },
+        "meter_power.yearly": {
+          "decimals": 2,
+          "title": {
+            "en": "Total yearly"
+          }
+        },
+        "meter_power.yearly_delivery_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Delivery yearly cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.yearly_production_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Production yearly cost"
+          },
+          "units": {
+            "en": "€"
+          }
+        },
+        "meter_power.yearly_cost": {
+          "decimals": 2,
+          "title": {
+            "en": "Yearly cost"
           },
           "units": {
             "en": "€"
@@ -280,7 +434,9 @@
         }
       },
       "energy": {
-        "cumulative": true
+        "cumulative": true,
+        "cumulativeImportedCapability": "meter_power.yearly_delivery",
+        "cumulativeExportedCapability": "meter_power.yearly_production"
       },
       "platforms": [
         "local"
