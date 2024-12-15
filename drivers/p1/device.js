@@ -234,10 +234,10 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       let respElec = await apis.getElec(accessToken, conn)
       if (respElec !== undefined && respElec.data !== undefined) {
 
-        console.log("elec day delivery kwh ",  respElec.data.measurement_groups[1].totals.d/1000)
-        console.log("elec day production kwh ",  respElec.data.measurement_groups[1].totals.p/1000)
-        console.log("elec day delivery cost ",  respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
-        console.log("elec day production cost ",  respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000)
+        // console.log("elec day delivery kwh ",  respElec.data.measurement_groups[1].totals.d/1000)
+        // console.log("elec day production kwh ",  respElec.data.measurement_groups[1].totals.p/1000)
+        // console.log("elec day delivery cost ",  respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
+        // console.log("elec day production cost ",  respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000)
 
         // console.log("elec month delivery kwh ",  respElec.data.measurement_groups[2].totals.d/1000)
         // console.log("elec month production kwh ",  respElec.data.measurement_groups[2].totals.p/1000)        

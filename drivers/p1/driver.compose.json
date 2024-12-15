@@ -39,31 +39,36 @@
     "measure_power": {
       "decimals": 0,
       "title": {
-        "en": "P1 power average"
+        "en": "P1 power average",
+        "nl": "P1 gemiddelde vermogen"
       }
     },
     "measure_power.delivery": {
       "decimals": 0,
       "title": {
-        "en": "P1 delivery power"
+        "en": "P1 delivery power",
+        "nl": "P1 geleverd vermogen"        
       }
     },
     "measure_power.production": {
       "decimals": 0,
       "title": {
-        "en": "P1 production power"
+        "en": "P1 production power",
+        "nl": "P1 afgenomen vermogen"
       }
     },
     "meter_gas.daily": {
       "decimals": 2,
       "title": {
-        "en": "Gas daily"
+        "en": "Gas daily",
+        "nl": "Gas vandaag"
       }
     },
     "meter_gas.daily_price": {
       "decimals": 2,
       "title": {
-        "en": "Gas daily cost"
+        "en": "Gas daily cost",
+        "nl": "Gas kosten vandaag"
       },
       "units": {
         "en": "€"
@@ -72,13 +77,15 @@
     "meter_gas.monthly": {
       "decimals": 2,
       "title": {
-        "en": "Gas monthly"
+        "en": "Gas monthly",
+        "nl": "Gas maandelijk"
       }
     },
     "meter_gas.monthly_price": {
       "decimals": 2,
       "title": {
-        "en": "Gas monthly cost"
+        "en": "Gas monthly cost",
+        "nl": "Gas maandelijkse kosten"
       },
       "units": {
         "en": "€"
@@ -87,13 +94,15 @@
     "meter_gas.yearly": {
       "decimals": 2,
       "title": {
-        "en": "Gas yearly"
+        "en": "Gas yearly",
+        "nl": "Gas jaarlijks"
       }
     },
     "meter_gas.yearly_price": {
       "decimals": 2,
       "title": {
-        "en": "Gas yearly cost"
+        "en": "Gas yearly cost",
+        "nl": "Gas jaarlijkse kosten"
       },
       "units": {
         "en": "€"
@@ -102,25 +111,29 @@
     "meter_power.daily_delivery": {
       "decimals": 2,
       "title": {
-        "en": "Delivery daily"
+        "en": "Delivery daily",
+        "nl": "Dagelijkse afname"
       }
     },
     "meter_power.daily_production": {
       "decimals": 2,
       "title": {
-        "en": "Production daily"
+        "en": "Production daily",
+        "nl": "Dagelijkse teruglevering"
       }
     },
     "meter_power.daily": {
       "decimals": 2,
       "title": {
-        "en": "Total daily"
+        "en": "Total daily",
+        "nl": "Dagelijks totaal"
       }
     },         
     "meter_power.daily_delivery_cost": {
       "decimals": 2,
       "title": {
-        "en": "Delivery daily cost"
+        "en": "Delivery daily cost",
+        "nl": "Dagelijkse kosten"
       },
       "units": {
         "en": "€"
@@ -129,7 +142,8 @@
     "meter_power.daily_production_cost": {
       "decimals": 2,
       "title": {
-        "en": "Production daily cost"
+        "en": "Production daily revenue",
+        "nl": "Dagelijkse opbrengst"
       },
       "units": {
         "en": "€"
@@ -138,7 +152,8 @@
     "meter_power.daily_cost": {
       "decimals": 2,
       "title": {
-        "en": "Daily cost"
+        "en": "Daily cost/revenue",
+        "nl": "Dagelijkse kosten/opbrengst"
       },
       "units": {
         "en": "€"
@@ -147,25 +162,29 @@
     "meter_power.monthly_delivery": {
       "decimals": 2,
       "title": {
-        "en": "Delivery monthly"
+        "en": "Delivery monthly",
+        "nl": "Maandelijkse afname"
       }
     },
     "meter_power.monthly_production": {
       "decimals": 2,
       "title": {
-        "en": "Production monthly"
+        "en": "Production monthly",
+        "nl": "Maandelijkse teruglevering"
       }
     },
     "meter_power.monthly": {
       "decimals": 2,
       "title": {
-        "en": "Total monthly"
+        "en": "Total monthly",
+        "nl": "Maandelijks totaal"
       }
     },         
     "meter_power.monthly_delivery_cost": {
       "decimals": 2,
       "title": {
-        "en": "Delivery monthly cost"
+        "en": "Delivery monthly cost",
+        "nl": "Maandelijkse kosten"
       },
       "units": {
         "en": "€"
@@ -174,7 +193,8 @@
     "meter_power.monthly_production_cost": {
       "decimals": 2,
       "title": {
-        "en": "Production monthly cost"
+        "en": "Production monthly revenue",
+        "nl": "Maandelijkse opbrengst"
       },
       "units": {
         "en": "€"
@@ -183,7 +203,8 @@
     "meter_power.monthly_cost": {
       "decimals": 2,
       "title": {
-        "en": "Monthly cost"
+        "en": "Monthly cost/revenue",
+        "nl": "Maandelijkse kosten/opbrengst"
       },
       "units": {
         "en": "€"
@@ -192,25 +213,29 @@
     "meter_power.yearly_delivery": {
       "decimals": 2,
       "title": {
-        "en": "Delivery yearly"
+        "en": "Delivery yearly",
+        "nl": "Jaarlijkse afname"
       }
     },
     "meter_power.yearly_production": {
       "decimals": 2,
       "title": {
-        "en": "Production yearly"
+        "en": "Production yearly",
+        "nl": "Jaarlijkse teruglevering"
       }
     },
     "meter_power.yearly": {
       "decimals": 2,
       "title": {
-        "en": "Total yearly"
+        "en": "Total yearly",
+        "nl": "Jaarlijks totaal"
       }
     },         
     "meter_power.yearly_delivery_cost": {
       "decimals": 2,
       "title": {
-        "en": "Delivery yearly cost"
+        "en": "Delivery yearly cost",
+        "nl": "Jaarlijkse kosten"
       },
       "units": {
         "en": "€"
@@ -219,7 +244,8 @@
     "meter_power.yearly_production_cost": {
       "decimals": 2,
       "title": {
-        "en": "Production yearly cost"
+        "en": "Production yearly revenue",
+        "nl": "Jaarlijkse opbrengst"
       },
       "units": {
         "en": "€"
@@ -228,7 +254,8 @@
     "meter_power.yearly_cost": {
       "decimals": 2,
       "title": {
-        "en": "Yearly cost"
+        "en": "Yearly cost/revenue",
+        "nl": "Jaarlijkse kosten/opbrengst"
       },
       "units": {
         "en": "€"
