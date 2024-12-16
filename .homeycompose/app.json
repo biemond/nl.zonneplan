@@ -1,7 +1,7 @@
 {
   "id": "nl.zonneplan",
   "version": "1.0.21",
-  "compatibility": ">=5.0.0",
+  "compatibility": ">=12.2.0",
   "sdk": 3,
   "brandColor": "#20df30", 
   "platforms": [
