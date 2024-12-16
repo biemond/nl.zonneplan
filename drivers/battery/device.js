@@ -27,7 +27,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     this.log('Battery has been added');
   }
 
-  async onSettings({ oldSettings: { }, newSettings: { }, changedKeys: { } }) {
+  async onSettings({ oldSettings, newSettings, changedKeys }) {
     this.log('Battery settings where changed');
   }
 
