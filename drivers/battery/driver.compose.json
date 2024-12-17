@@ -6,16 +6,35 @@
   "class": "battery",
   "capabilities": [
     "measure_power",
+    "meter_power.import",
+    "meter_power.export",
     "meter_power",
     "measure_battery",
     "battery_charging_state"  
   ],
+  "capabilitiesOptions": {
+    "meter_power.import": {
+      "title": {
+        "en": "Total Yield Import",
+        "nl": "Totaal import"
+      }
+    },
+    "meter_power.export": {
+      "title": {
+        "en": "Total Yield Export",
+        "nl": "Totaal export"
+      }
+    }
+  },
   "platforms": [
     "local"
   ],
   "connectivity": [
     "cloud"
   ],
+  "energy": {
+    "homeBattery": true
+  },
   "images": {
     "small": "{{driverAssetsPath}}/images/small.png",
     "large": "{{driverAssetsPath}}/images/large.png",
