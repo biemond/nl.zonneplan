@@ -33,7 +33,8 @@
     "cloud"
   ],
   "energy": {
-    "homeBattery": true
+    "homeBattery": true,
+    "batteries": ["OTHER"]
   },
   "images": {
     "small": "{{driverAssetsPath}}/images/small.png",

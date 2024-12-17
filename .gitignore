@@ -2,3 +2,6 @@
 /node_modules/
 /.homeybuild/
 test.js
+drivers/.DS_Store
+drivers/battery/.DS_Store
+.DS_Store
