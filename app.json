@@ -150,6 +150,62 @@
           }
         ],
         "id": "meter_power_changed"
+      },
+      {
+        "id": "boolean.onoff_true",
+        "title": {
+          "en": "Battery is online",
+          "nl": "Batterij is online"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=battery"
+          }
+        ]
+      },
+      {
+        "id": "boolean.onoff_false",
+        "title": {
+          "en": "Battery is offline",
+          "nl": "Batterij is offline"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=battery"
+          }
+        ]
+      },
+      {
+        "id": "boolean.dynamicloadbalancingactive_true",
+        "title": {
+          "en": "Dynamic load balancing activated",
+          "nl": "Dynamische load balancing geactiveerd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=battery"
+          }
+        ]
+      },
+      {
+        "id": "boolean.dynamicloadbalancingactive_false",
+        "title": {
+          "en": "Dynamic load balancing balancing deactivated",
+          "nl": "Dynamische balancering gedeactiveerd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=battery"
+          }
+        ]
       }
     ]
   },
@@ -161,6 +217,10 @@
       },
       "class": "battery",
       "capabilities": [
+        "boolean.onoff",
+        "boolean.dynamicloadbalancing",
+        "boolean.dynamicloadbalancingactive",
+        "lastmeasured",
         "measure_power",
         "meter_power.import",
         "meter_power.export",
@@ -169,15 +229,39 @@
         "battery_charging_state"
       ],
       "capabilitiesOptions": {
+        "boolean.onoff": {
+          "title": {
+            "en": "Connected?",
+            "nl": "Verbonden?"
+          }
+        },
+        "lastmeasured": {
+          "title": {
+            "en": "Last Measured",
+            "nl": "Laatst gemeten"
+          }
+        },
+        "boolean.dynamicloadbalancing": {
+          "title": {
+            "en": "Dynamic Load Balancing?",
+            "nl": "Dynamische balancering?"
+          }
+        },
+        "boolean.dynamicloadbalancingactive": {
+          "title": {
+            "en": "Dynamic Load Balancing Active?",
+            "nl": "Dynamische balancering actief?"
+          }
+        },
         "meter_power.import": {
           "title": {
-            "en": "Total Yield Import",
+            "en": "Total Import",
             "nl": "Totaal import"
           }
         },
         "meter_power.export": {
           "title": {
-            "en": "Total Yield Export",
+            "en": "Total Export",
             "nl": "Totaal export"
           }
         }
@@ -559,15 +643,33 @@
     }
   ],
   "capabilities": {
+    "boolean": {
+      "type": "boolean",
+      "title": {
+        "en": "On/Off?",
+        "nl": "Aan/Uit?"
+      },
+      "desc": {
+        "en": "Is it turned on or off",
+        "nl": "Staat het aan of uit?"
+      },
+      "insights": true,
+      "getable": true,
+      "setable": true,
+      "uiComponent": "sensor",
+      "icon": "/assets/icon.svg"
+    },
     "lastmeasured": {
       "type": "string",
       "title": {
-        "en": "Last update UTC"
+        "en": "Last update UTC",
+        "nl": "Laatst bijgewerkt (UTC)"
       },
       "getable": true,
       "setable": false,
       "uiComponent": "sensor",
-      "uiQuickAction": false
+      "uiQuickAction": false,
+      "icon": "/assets/capability-clock.svg"
     },
     "lastmeasured_production": {
       "type": "string",
@@ -578,46 +680,6 @@
       "setable": false,
       "uiComponent": "sensor",
       "uiQuickAction": false
-    },
-    "measure_power": {
-      "type": "number",
-      "title": {
-        "en": "Power",
-        "nl": "Vermogen"
-      },
-      "units": {
-        "en": "W"
-      },
-      "insights": true,
-      "desc": {
-        "en": "Power in watt (W)",
-        "nl": "Vermogen in watt (W)"
-      },
-      "chartType": "stepLine",
-      "decimals": 2,
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor"
-    },
-    "meter_power": {
-      "type": "number",
-      "title": {
-        "en": "Total Yield",
-        "nl": "Totale opbrengst"
-      },
-      "decimals": 2,
-      "units": {
-        "en": "kWh"
-      },
-      "desc": {
-        "en": "Energy usage in kilowatt-hour (kWh)",
-        "nl": "Energie verbruik in kilowattuur (kWh)"
-      },
-      "chartType": "spline",
-      "insights": true,
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor"
     },
     "panel_count": {
       "type": "number",

@@ -1,0 +1,36 @@
+{
+    "triggers": [
+        {
+            "id": "boolean.onoff_true",
+            "title": {
+                "en": "Battery is online",
+                "nl": "Batterij is online"
+            },
+            "args": []
+        },
+        {
+            "id": "boolean.onoff_false",
+            "title": {
+                "en": "Battery is offline",
+                "nl": "Batterij is offline"
+            },
+            "args": []
+        },
+        {
+            "id": "boolean.dynamicloadbalancingactive_true",
+            "title": {
+                "en": "Dynamic load balancing activated",
+                "nl": "Dynamische load balancing geactiveerd"
+            },
+            "args": []
+        },
+        {
+            "id": "boolean.dynamicloadbalancingactive_false",
+            "title": {
+                "en": "Dynamic load balancing balancing deactivated",
+                "nl": "Dynamische balancering gedeactiveerd"
+            },
+            "args": []
+        }
+    ]
+}

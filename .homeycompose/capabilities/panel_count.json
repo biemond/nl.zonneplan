@@ -1,15 +1,15 @@
 {
-    "type": "number",
-    "title": {
-      "en": "panel count"
-    },
-    "insights": true,
-    "desc": {
-      "en": "Total panel",
-      "nl": "Total aantal panelen"
-    },
-    "decimals": 0,
-    "getable": true,
-    "setable": false,
-    "uiComponent": "sensor"
-  }
+  "type": "number",
+  "title": {
+    "en": "panel count"
+  },
+  "insights": true,
+  "desc": {
+    "en": "Total panel",
+    "nl": "Total aantal panelen"
+  },
+  "decimals": 0,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor"
+}

@@ -1,10 +1,12 @@
 {
     "type": "string",
     "title": {
-        "en": "Last update UTC"
+        "en": "Last update UTC",
+        "nl": "Laatst bijgewerkt (UTC)"
     },
     "getable": true,
     "setable": false,
     "uiComponent": "sensor",
-    "uiQuickAction": false
+    "uiQuickAction": false,
+    "icon": "/assets/capability-clock.svg"
 }

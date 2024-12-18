@@ -1,18 +1,18 @@
 {
-    "type": "number",
-    "title": {
-      "en": "Panel wp"
-    },
-    "insights": true,
-    "desc": {
-      "en": "Panel WP",
-      "nl": "Paneel WP"
-    },
-    "decimals": 0,
-    "getable": true,
-    "setable": false,
-    "uiComponent": "sensor",
-    "units": {
-      "en": "WP"
-    }    
-  }
+  "type": "number",
+  "title": {
+    "en": "Panel wp"
+  },
+  "insights": true,
+  "desc": {
+    "en": "Panel WP",
+    "nl": "Paneel WP"
+  },
+  "decimals": 0,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "units": {
+    "en": "WP"
+  }    
+}
