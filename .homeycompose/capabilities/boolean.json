@@ -1,0 +1,16 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "On/Off?",
+    "nl": "Aan/Uit?"
+  },
+  "desc": {
+    "en": "Is it turned on or off",
+    "nl": "Staat het aan of uit?"
+  },
+  "insights": true,
+  "getable": true,
+  "setable": true,
+  "uiComponent": "sensor",
+  "icon": "/assets/icon.svg"
+}

@@ -5,6 +5,10 @@
   },
   "class": "battery",
   "capabilities": [
+    "boolean.onoff",
+    "boolean.dynamicloadbalancing",
+    "boolean.dynamicloadbalancingactive",
+    "lastmeasured",
     "measure_power",
     "meter_power.import",
     "meter_power.export",
@@ -13,18 +17,42 @@
     "battery_charging_state"  
   ],
   "capabilitiesOptions": {
+    "boolean.onoff": {
+      "title": {
+        "en": "Connected?",
+        "nl": "Verbonden?"
+      }
+    },
+    "lastmeasured": {
+      "title": {
+        "en": "Last Measured",
+        "nl": "Laatst gemeten"
+      }
+    },
+    "boolean.dynamicloadbalancing": {
+      "title": {
+        "en": "Dynamic Load Balancing?",
+        "nl": "Dynamische balancering?"
+      }
+    },
+    "boolean.dynamicloadbalancingactive": {
+      "title": {
+        "en": "Dynamic Load Balancing Active?",
+        "nl": "Dynamische balancering actief?"
+      }
+    },
     "meter_power.import": {
       "title": {
-        "en": "Total Yield Import",
+        "en": "Total Import",
         "nl": "Totaal import"
       }
     },
     "meter_power.export": {
       "title": {
-        "en": "Total Yield Export",
+        "en": "Total Export",
         "nl": "Totaal export"
       }
-    }
+    }    
   },
   "platforms": [
     "local"
