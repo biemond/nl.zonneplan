@@ -681,46 +681,6 @@
       "uiComponent": "sensor",
       "uiQuickAction": false
     },
-    "measure_power": {
-      "type": "number",
-      "title": {
-        "en": "Power",
-        "nl": "Vermogen"
-      },
-      "units": {
-        "en": "W"
-      },
-      "insights": true,
-      "desc": {
-        "en": "Power in watt (W)",
-        "nl": "Vermogen in watt (W)"
-      },
-      "chartType": "stepLine",
-      "decimals": 2,
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor"
-    },
-    "meter_power": {
-      "type": "number",
-      "title": {
-        "en": "Total Yield",
-        "nl": "Totale opbrengst"
-      },
-      "decimals": 2,
-      "units": {
-        "en": "kWh"
-      },
-      "desc": {
-        "en": "Energy usage in kilowatt-hour (kWh)",
-        "nl": "Energie verbruik in kilowattuur (kWh)"
-      },
-      "chartType": "spline",
-      "insights": true,
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor"
-    },
     "panel_count": {
       "type": "number",
       "title": {
