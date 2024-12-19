@@ -1,0 +1,14 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Cycle count"
+  },
+  "insights": true,
+  "desc": {
+    "en": "Battery cycle count"
+  },
+  "decimals": 0,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor"
+}

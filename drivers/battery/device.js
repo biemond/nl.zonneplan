@@ -140,6 +140,17 @@ module.exports = class SolarplanDevice extends Homey.Device {
       }
     }
 
+    if (this.validResult(meta['cycle_count'])) {
+      if (!this.hasCapability('cycle_count')) await this.addCapability('cycle_count');
+
+      const cycleCount = meta['cycle_count'];
+      if (cycleCount !== null && !(typeof deviceState !== 'undefined'
+          && typeof deviceState['cycle_count'] !== 'undefined'
+          && deviceState['cycle_count'] === cycleCount)) {
+        this.setCapabilityValue('cycle_count', cycleCount);
+      }
+    }
+
     if (this.validResult(meta['battery_state'])) {
       if (!this.hasCapability('battery_charging_state')) await this.addCapability('battery_charging_state');
 

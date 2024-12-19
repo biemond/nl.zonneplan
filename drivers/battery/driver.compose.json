@@ -14,7 +14,8 @@
     "meter_power.export",
     "meter_power",
     "measure_battery",
-    "battery_charging_state"  
+    "battery_charging_state",
+    "cycle_count"  
   ],
   "capabilitiesOptions": {
     "boolean.onoff": {

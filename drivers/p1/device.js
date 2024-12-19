@@ -189,43 +189,18 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       }
       const conn = getConnectionData(resp.data.address_groups, unitID)
       console.log("conn data ", conn)
-      let respGas = await apis.getGas(accessToken, conn)
-      if (respGas !== undefined && respGas.data !== undefined) {
-        console.log(respGas.data);
-        console.log("gas day m3 ", respGas.data.measurement_groups[0].total / 1000)
-        console.log("gas day price ", respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000)
-        console.log("gas month m3 ", respGas.data.measurement_groups[1].total / 1000)
-        console.log("gas month price ", respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000)
-        console.log("gas year m3 ", respGas.data.measurement_groups[2].total / 1000)
-        console.log("gas year price ", respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000)
+      console.log("gas_meter_code ", meta.gas_meter_code)
+      if (meta.gas_meter_code) {
 
-        console.log(respGas.data.measurement_groups[0].measurements.length);
-        if (respGas.data.measurement_groups[0].measurements.length == 0) {
-          console.log('remove gas caps');
-          if (this.hasCapability('meter_gas') === true) {
-            await this.removeCapability('meter_gas');
-          }
-
-          if (this.hasCapability('meter_gas.daily') === true) {
-            await this.removeCapability('meter_gas.daily');
-          }
-          if (this.hasCapability('meter_gas.daily_price') === true) {
-            await this.removeCapability('meter_gas.daily_price');
-          }
-          if (this.hasCapability('meter_gas.monthly') === true) {
-            await this.removeCapability('meter_gas.monthly');
-          }
-          if (this.hasCapability('meter_gas.monthly_price') === true) {
-            await this.removeCapability('meter_gas.monthly_price');
-          }
-          if (this.hasCapability('meter_gas.yearly') === true) {
-            await this.removeCapability('meter_gas.yearly');
-          }
-          if (this.hasCapability('meter_gas.yearly_price') === true) {
-            await this.removeCapability('meter_gas.yearly_price');
-          }
-
-        } else {
+        let respGas = await apis.getGas(accessToken, conn)
+        if (respGas !== undefined && respGas.data !== undefined) {
+          console.log(respGas.data);
+          console.log("gas day m3 ", respGas.data.measurement_groups[0].total / 1000)
+          console.log("gas day price ", respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000)
+          console.log("gas month m3 ", respGas.data.measurement_groups[1].total / 1000)
+          console.log("gas month price ", respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000)
+          console.log("gas year m3 ", respGas.data.measurement_groups[2].total / 1000)
+          console.log("gas year price ", respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000)
 
           if (this.validResult(respGas.data.measurement_groups[0].total)) {
             this.addCapability('meter_gas.daily');
@@ -259,15 +234,39 @@ module.exports = class SolarplanP1Device extends Homey.Device {
             var price = respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000;
             this.setCapabilityValue('meter_gas.yearly_price', price);
           }
+
+        }
+      } else {
+        console.log('remove gas caps');
+        if (this.hasCapability('meter_gas') === true) {
+          await this.removeCapability('meter_gas');
+        }
+        if (this.hasCapability('meter_gas.daily') === true) {
+          await this.removeCapability('meter_gas.daily');
+        }
+        if (this.hasCapability('meter_gas.daily_price') === true) {
+          await this.removeCapability('meter_gas.daily_price');
+        }
+        if (this.hasCapability('meter_gas.monthly') === true) {
+          await this.removeCapability('meter_gas.monthly');
+        }
+        if (this.hasCapability('meter_gas.monthly_price') === true) {
+          await this.removeCapability('meter_gas.monthly_price');
+        }
+        if (this.hasCapability('meter_gas.yearly') === true) {
+          await this.removeCapability('meter_gas.yearly');
+        }
+        if (this.hasCapability('meter_gas.yearly_price') === true) {
+          await this.removeCapability('meter_gas.yearly_price');
         }
       }
       let respElec = await apis.getElec(accessToken, conn)
       if (respElec !== undefined && respElec.data !== undefined) {
 
-        console.log("elec day delivery kwh ",  respElec.data.measurement_groups[1].totals.d/1000)
-        console.log("elec day production kwh ",  respElec.data.measurement_groups[1].totals.p/1000)
-        console.log("elec day delivery cost ",  respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax/10000000)
-        console.log("elec day production cost ",  respElec.data.measurement_groups[1].meta.production_costs_incl_tax/10000000)
+        console.log("elec day delivery kwh ", respElec.data.measurement_groups[1].totals.d / 1000)
+        console.log("elec day production kwh ", respElec.data.measurement_groups[1].totals.p / 1000)
+        console.log("elec day delivery cost ", respElec.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000)
+        console.log("elec day production cost ", respElec.data.measurement_groups[1].meta.production_costs_incl_tax / 10000000)
 
         // console.log("elec month delivery kwh ",  respElec.data.measurement_groups[2].totals.d/1000)
         // console.log("elec month production kwh ",  respElec.data.measurement_groups[2].totals.p/1000)        

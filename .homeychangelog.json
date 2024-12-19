@@ -38,7 +38,7 @@
   "1.0.22": {
     "en": "battery"
   },
-  "1.0.23": {
-    "en": "Added support for Zonneplan battery with additional capabilities"
+  "1.0.24": {
+    "en": "Added support for Zonneplan battery with additional capabilities, p1 gas fix"
   }                                        
 }
