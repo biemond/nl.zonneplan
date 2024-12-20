@@ -202,25 +202,25 @@ module.exports = class SolarplanP1Device extends Homey.Device {
           console.log("gas year m3 ", respGas.data.measurement_groups[2].total / 1000)
           console.log("gas year price ", respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000)
 
-          if (this.validResult(respGas.data.measurement_groups[0].total)) {
+          // if (this.validResult(respGas.data.measurement_groups[0].total)) {
             this.addCapability('meter_gas.daily');
-            var gas = respGas.data.measurement_groups[0].total / 1000;
-            this.setCapabilityValue('meter_gas.daily', gas);
-          }
+            var gasDaily = respGas.data.measurement_groups[0].total / 1000;
+            this.setCapabilityValue('meter_gas.daily', gasDaily);
+          // }
           if (this.validResult(respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax)) {
             this.addCapability('meter_gas.daily_price');
-            var price = respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000;
-            this.setCapabilityValue('meter_gas.daily_price', price);
+            var priceDaily = respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000;
+            this.setCapabilityValue('meter_gas.daily_price', priceDaily);
           }
-          if (this.validResult(respGas.data.measurement_groups[1].total)) {
+          // if (this.validResult(respGas.data.measurement_groups[1].total)) {
             this.addCapability('meter_gas.monthly');
-            var gas = respGas.data.measurement_groups[1].total / 1000;
-            this.setCapabilityValue('meter_gas.monthly', gas);
-          }
+            var gasMonthly = respGas.data.measurement_groups[1].total / 1000;
+            this.setCapabilityValue('meter_gas.monthly', gasMonthly);
+          // }
           if (this.validResult(respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax)) {
             this.addCapability('meter_gas.monthly_price');
-            var price = respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
-            this.setCapabilityValue('meter_gas.monthly_price', price);
+            var priceMonthly = respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
+            this.setCapabilityValue('meter_gas.monthly_price', priceMonthly);
           }
           if (this.validResult(respGas.data.measurement_groups[2].total)) {
             this.addCapability('meter_gas.yearly');
