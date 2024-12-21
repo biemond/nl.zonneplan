@@ -130,22 +130,22 @@ module.exports = class SolarplanP1Device extends Homey.Device {
   }
 
   setValues(meta) {
-    if (this.validResult(meta['electricity_last_measured_average_value'])) {
+    // if (this.validResult(meta['electricity_last_measured_average_value'])) {
       this.addCapability('measure_power');
-      var power = meta['electricity_last_measured_average_value'];
-      console.log("power ", power);
-      this.setCapabilityValue('measure_power', power);
-    }
-    if (this.validResult(meta['electricity_last_measured_delivery_value'])) {
+      var powerAvg = meta['electricity_last_measured_average_value'];
+      console.log("power ", powerAvg);
+      this.setCapabilityValue('measure_power', powerAvg);
+    // }
+    // if (this.validResult(meta['electricity_last_measured_delivery_value'])) {
       this.addCapability('measure_power.delivery');
-      var power = meta['electricity_last_measured_delivery_value'];
-      this.setCapabilityValue('measure_power.delivery', power);
-    }
-    if (this.validResult(meta['electricity_last_measured_production_value'])) {
+      var powerD = meta['electricity_last_measured_delivery_value'];
+      this.setCapabilityValue('measure_power.delivery', powerD);
+    // }
+    // if (this.validResult(meta['electricity_last_measured_production_value'])) {
       this.addCapability('measure_power.production');
-      var power = meta['electricity_last_measured_production_value'];
-      this.setCapabilityValue('measure_power.production', power);
-    }
+      var powerP = meta['electricity_last_measured_production_value'];
+      this.setCapabilityValue('measure_power.production', powerP);
+    // }
     if (this.validResult(meta['electricity_last_measured_at'])) {
       this.addCapability('lastmeasured');
       var date = meta['electricity_last_measured_at'].substring(0, 19);
