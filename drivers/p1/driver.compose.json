@@ -54,7 +54,7 @@
       "decimals": 0,
       "title": {
         "en": "P1 production power",
-        "nl": "P1 afgenomen vermogen"
+        "nl": "P1 teruggeleverd vermogen"
       }
     },
     "meter_gas.daily": {

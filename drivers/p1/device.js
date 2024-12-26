@@ -207,21 +207,21 @@ module.exports = class SolarplanP1Device extends Homey.Device {
             var gasDaily = respGas.data.measurement_groups[0].total / 1000;
             this.setCapabilityValue('meter_gas.daily', gasDaily);
           // }
-          if (this.validResult(respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax)) {
+          // if (this.validResult(respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax)) {
             this.addCapability('meter_gas.daily_price');
             var priceDaily = respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000;
             this.setCapabilityValue('meter_gas.daily_price', priceDaily);
-          }
+          // }
           // if (this.validResult(respGas.data.measurement_groups[1].total)) {
             this.addCapability('meter_gas.monthly');
             var gasMonthly = respGas.data.measurement_groups[1].total / 1000;
             this.setCapabilityValue('meter_gas.monthly', gasMonthly);
           // }
-          if (this.validResult(respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax)) {
+          // if (this.validResult(respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax)) {
             this.addCapability('meter_gas.monthly_price');
             var priceMonthly = respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
             this.setCapabilityValue('meter_gas.monthly_price', priceMonthly);
-          }
+          // }
           if (this.validResult(respGas.data.measurement_groups[2].total)) {
             this.addCapability('meter_gas.yearly');
             this.addCapability('meter_gas');
