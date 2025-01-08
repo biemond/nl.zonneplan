@@ -34,4 +34,15 @@ module.exports = {
     const resp = await res.json();
     return resp;
   },
+
+  async getBatteryUsageData2(token, uuid, battUuid) {
+    const url = `https://app-api.zonneplan.nl/connections/${uuid}/home-battery-installation/${battUuid}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', Authorization: `Bearer ${token}` },
+    });
+    const resp = await res.json();
+    return resp;
+  },
+
 };

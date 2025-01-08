@@ -12,10 +12,16 @@
     "measure_power",
     "meter_power.import",
     "meter_power.export",
+    "meter_power.daily_import",
+    "meter_power.daily_export",    
     "meter_power",
     "measure_battery",
     "battery_charging_state",
-    "cycle_count"  
+    "cycle_count",
+    "meter_power.daily_earned",
+    "meter_power.total_earned",
+    "inverterstate",
+    "batterystate"       
   ],
   "capabilitiesOptions": {
     "boolean.onoff": {
@@ -53,7 +59,39 @@
         "en": "Total Export",
         "nl": "Totaal export"
       }
-    }    
+    },
+    "meter_power.daily_import": {
+      "title": {
+        "en": "Total Daily Import",
+        "nl": "Totaal dagelijkse import"
+      }
+    },
+    "meter_power.daily_export": {
+      "title": {
+        "en": "Total Daily Export",
+        "nl": "Totaal dagelijkse export"
+      }
+    },
+    "meter_power.daily_earned": {
+      "decimals": 2,
+      "title": {
+        "en": "Earned today",
+        "nl": "Vandaag verdient"
+      },
+      "units": {
+        "en": "€"
+      }      
+    },
+    "meter_power.total_earned": {
+      "decimals": 2,
+      "title": {
+        "en": "Earned",
+        "nl": "Totaal verdient"
+      },
+      "units": {
+        "en": "€"
+      }      
+    }                 
   },
   "platforms": [
     "local"

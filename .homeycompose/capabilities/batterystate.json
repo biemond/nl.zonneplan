@@ -1,0 +1,10 @@
+{
+    "type": "string",
+    "title": {
+        "en": "Battery state"
+    },
+    "getable": true,
+    "setable": false,
+    "uiComponent": "sensor",
+    "uiQuickAction": false
+}
