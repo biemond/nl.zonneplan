@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "compatibility": ">=12.2.0",
   "sdk": 3,
   "brandColor": "#20df30",
@@ -288,7 +288,7 @@
           "decimals": 2,
           "title": {
             "en": "Earned today",
-            "nl": "Vandaag verdient"
+            "nl": "Vandaag verdiend"
           },
           "units": {
             "en": "€"
@@ -298,7 +298,7 @@
           "decimals": 2,
           "title": {
             "en": "Earned",
-            "nl": "Totaal verdient"
+            "nl": "Totaal verdiend"
           },
           "units": {
             "en": "€"

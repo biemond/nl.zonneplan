@@ -76,7 +76,7 @@
       "decimals": 2,
       "title": {
         "en": "Earned today",
-        "nl": "Vandaag verdient"
+        "nl": "Vandaag verdiend"
       },
       "units": {
         "en": "€"
@@ -86,7 +86,7 @@
       "decimals": 2,
       "title": {
         "en": "Earned",
-        "nl": "Totaal verdient"
+        "nl": "Totaal verdiend"
       },
       "units": {
         "en": "€"
