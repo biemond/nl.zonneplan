@@ -101,7 +101,8 @@
   ],
   "energy": {
     "homeBattery": true,
-    "batteries": ["OTHER"]
+    "meterPowerImportedCapability": "meter_power.import",
+    "meterPowerExportedCapability": "meter_power.export"
   },
   "images": {
     "small": "{{driverAssetsPath}}/images/small.png",

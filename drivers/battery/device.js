@@ -11,6 +11,20 @@ module.exports = class SolarplanDevice extends Homey.Device {
   async onInit() {
     this.log('Battery has been initialized');
 
+    // Get energy object for devices that are already in use
+    let energy = await this.getEnergy();
+
+    /* Enable home battery energy settings (for old devices) */
+    if (energy === null || energy.homeBattery === null || energy.meterPowerImportedCapability === null || energy.meterPowerExportedCapability === null) {
+      energy = {
+        homeBattery: true,
+        meterPowerImportedCapability: 'meter_power.import',
+        meterPowerExportedCapability: 'meter_power.export',
+      };
+
+      await this.setEnergy(energy);
+    }
+
     const name = this.getData().id;
     this.log(`device name id ${name}`);
     this.log(`device name ${this.getName()}`);
@@ -231,7 +245,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     if (this.validResult(battDetails['total_day'])) {
       if (!this.hasCapability('meter_power.daily_earned')) await this.addCapability('meter_power.daily_earned');
 
-      let earnedDay = battDetails['total_day'] / 10000000;
+      const earnedDay = battDetails['total_day'] / 10000000;
       if (earnedDay !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['meter_power.daily_earned'] !== 'undefined' && deviceState['meter_power.daily_earned'] === earnedDay)) {
         this.setCapabilityValue('meter_power.daily_earned', earnedDay);
       }
@@ -240,7 +254,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     if (this.validResult(battDetails['total_earned'])) {
       if (!this.hasCapability('meter_power.total_earned')) await this.addCapability('meter_power.total_earned');
 
-      let earnedTotal = battDetails['total_earned'] / 10000000;
+      const earnedTotal = battDetails['total_earned'] / 10000000;
       if (earnedTotal !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['meter_power.total_earned'] !== 'undefined' && deviceState['meter_power.total_earned'] === earnedTotal)) {
         this.setCapabilityValue('meter_power.total_earned', earnedTotal);
       }
@@ -249,7 +263,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     if (this.validResult(battDetails['battery_state'])) {
       if (!this.hasCapability('batterystate')) await this.addCapability('batterystate');
 
-      let state = battDetails['battery_state'];
+      const state = battDetails['battery_state'];
       if (state !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['batterystate'] !== 'undefined' && deviceState['batterystate'] === state)) {
         this.setCapabilityValue('batterystate', state);
       }
@@ -258,12 +272,11 @@ module.exports = class SolarplanDevice extends Homey.Device {
     if (this.validResult(battDetails['inverter_state'])) {
       if (!this.hasCapability('inverterstate')) await this.addCapability('inverterstate');
 
-      let state = battDetails['inverter_state'];
+      const state = battDetails['inverter_state'];
       if (state !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['inverterstate'] !== 'undefined' && deviceState['inverterstate'] === state)) {
         this.setCapabilityValue('inverterstate', state);
       }
     }
-
   }
 
   delay(ms) {
@@ -299,7 +312,6 @@ module.exports = class SolarplanDevice extends Homey.Device {
     }
 
     if (resp !== undefined && resp.data !== undefined && Object.hasOwn(resp.data, 'address_groups')) {
-
       const mainUuid = this.getContractDataMain(resp.data.address_groups, unitID);
       this.log('Main Contract: ', mainUuid);
       const meta = this.getContractData(resp.data.address_groups, unitID);
@@ -336,22 +348,24 @@ module.exports = class SolarplanDevice extends Homey.Device {
   }
 
   getContractDataMain(arrayOfGroups, id) {
-    console.log('contract ', id);
-    // console.log('List of contract ', arrayOfGroups);
-    for (var i = 0; i < arrayOfGroups.length; i++) {
-      for (var a = 0; a < arrayOfGroups[i].connections.length; a++) {
+    this.log('contract ', id);
+
+    for (let i = 0; i < arrayOfGroups.length; i++) {
+      for (let a = 0; a < arrayOfGroups[i].connections.length; a++) {
         // console.log('List of conn ', arrayOfGroups[i].connections[a]);
         if (arrayOfGroups[i].connections[a].contracts) {
-          for (var n = 0; n < arrayOfGroups[i].connections[a].contracts.length; n++) {
+          for (let n = 0; n < arrayOfGroups[i].connections[a].contracts.length; n++) {
             // console.log('contract uudi ', arrayOfGroups[i].connections[a].contracts[n]);
-            if (arrayOfGroups[i].connections[a].contracts[n].uuid == id) {
-              console.log('connection uudi ', arrayOfGroups[i].connections[a].uuid);
-              return arrayOfGroups[i].connections[a].uuid
+            if (arrayOfGroups[i].connections[a].contracts[n].uuid === id) {
+              this.log('connection uudi ', arrayOfGroups[i].connections[a].uuid);
+              return arrayOfGroups[i].connections[a].uuid;
             }
           }
         }
       }
     }
+
+    return null;
   }
 
   formatDateTime(dateString) {

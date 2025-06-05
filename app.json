@@ -2,7 +2,7 @@
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
   "version": "1.0.31",
-  "compatibility": ">=12.2.0",
+  "compatibility": ">=12.4.5",
   "sdk": 3,
   "brandColor": "#20df30",
   "platforms": [
@@ -44,6 +44,10 @@
   "bugs": {
     "url": "https://github.com/biemond/nl.zonneplan/issues"
   },
+  "homepage": "https://github.com/biemond/nl.zonneplan/",
+  "support": "https://github.com/biemond/nl.zonneplan/issues/",
+  "homeyCommunityTopicId": 120587,
+  "source": "https://github.com/biemond/nl.zonneplan/",
   "api": {
     "postActivate": {
       "method": "POST",
@@ -313,9 +317,8 @@
       ],
       "energy": {
         "homeBattery": true,
-        "batteries": [
-          "OTHER"
-        ]
+        "meterPowerImportedCapability": "meter_power.import",
+        "meterPowerExportedCapability": "meter_power.export"
       },
       "images": {
         "small": "/drivers/battery/assets/images/small.png",
