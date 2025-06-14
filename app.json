@@ -403,6 +403,8 @@
         "meter_gas.monthly_price",
         "meter_gas.yearly",
         "meter_gas.yearly_price",
+        "meter_power.imported",
+        "meter_power.exported",
         "meter_power.daily_delivery",
         "meter_power.daily_production",
         "meter_power.daily",
@@ -493,6 +495,18 @@
           },
           "units": {
             "en": "€"
+          }
+        },
+        "meter_power.imported": {
+          "title": {
+            "en": "Power Total Import",
+            "nl": "Totaal verbuik import"
+          }
+        },
+        "meter_power.exported": {
+          "title": {
+            "en": "Power Total Export",
+            "nl": "Totaal verbruik export"
           }
         },
         "meter_power.daily_delivery": {
@@ -651,8 +665,8 @@
       },
       "energy": {
         "cumulative": true,
-        "cumulativeImportedCapability": "meter_power.yearly_delivery",
-        "cumulativeExportedCapability": "meter_power.yearly_production"
+        "cumulativeImportedCapability": "meter_power.imported",
+        "cumulativeExportedCapability": "meter_power.exported"
       },
       "platforms": [
         "local"

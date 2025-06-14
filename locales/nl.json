@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "title": "Zonneplan Instellingen",
+        "subtitle": "Configureer uw Zonneplan account",
+        "refresh": {
+            "legend": "Verificatie & vernieuwings token",
+            "email": "Email",
+            "activate": "Activeer de App",
+            "finishActivation": "Voltooi Activatie"
+        }
+    }
+}

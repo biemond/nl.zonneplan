@@ -1,2 +1,12 @@
 {
+    "settings": {
+        "title": "Zonneplan Settings",
+        "subtitle": "Configure your Zonneplan account",
+        "refresh": {
+            "legend": "Verification or refresh tokens",
+            "email": "Email",
+            "activate": "Activate the App",
+            "finishActivation": "Finish Activation"
+        }
+    }
 }
