@@ -46,5 +46,8 @@
   },
   "1.0.31": {
     "en": "p1 fixes, new battery earning fields"
+  },
+  "1.0.32": {
+    "en": "Fix for new battery capabilities as of Homey v12.4.5"
   }                                                 
 }
