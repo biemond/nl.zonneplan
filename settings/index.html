@@ -1,121 +1,24 @@
-<!doctype html>
 <html>
+    <head>
+        <script defer type="module" src="index.mjs"></script>
+        <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+    </head>
 
-<head>
-    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
-</head>
+    <body>
+        <header class="homey-header">
+            <h1 class="homey-title" data-i18n="settings.title"></h1>
+            <p class="homey-subtitle" data-i18n="settings.subtitle"></p>
+        </header>
 
-<body>
-    <header class="homey-header">
-        <h1 class="homey-title" data-i18n="settings.title"></h1>
-        <p class="homey-subtitle" data-i18n="settings.subtitle"></p>
-    </header>
-
-    <!-- <form class="homey-form"> -->
-    <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend">Verification or refresh tokens</legend>
-        <div class="homey-form-group">
-            <label class="homey-form-label" for="email">E-mail</label>
-            <input class="homey-form-input" id="email" type="email" value="" />
-        </div>
-    </fieldset>
-    <button id="activate" class="homey-button-primary" onclick="activateEmail()">Activate your e-mail</button>
-    <button id="save" class="homey-button-primary" onclick="save()" disabled="disabled">Finish activation</button>
-    <!-- </form> -->
-
-    <script type="text/javascript">
-        let uuid;
-        let otpObject = {};
-
-        async function activateEmail() {
-            var emailElement = document.getElementById('email');
-            console.log('email value html', emailElement.value);
-            Homey.api('POST', '/', { email: emailElement.value }, function (err, success) {
-                if (err) {
-                    console.log('error ', err)
-                    Homey.alert("Email you have entered is not registered.");
-                }
-                if (!err && success) {
-                    console.log('success', success.data.uuid)
-                    uuid = success.data.uuid;
-                    var saveElement = document.getElementById('save');
-                    const message = "We send an activation email to "
-                        + emailElement.value + ", please activate and then click Finish activation to get OTP."
-                    Homey.alert(message)
-                    saveElement.removeAttribute("disabled");
-
-                }
-            });
-        }
-
-
-        async function save() {
-            console.log('uuid in save html', uuid);
-            Homey.api('GET', '/otp/' + uuid, {}, function (err, success) {
-                if (err) {
-                    console.log('error ', err)
-                }
-                if (!err && success) {
-                    otpObject = success.data;
-                    console.log('otpObject values ', otpObject)
-                    Homey.set('email', otpObject.email, function (err) {
-                        if (err) return Homey.alert(err);
-                    });
-                    Homey.set('password', otpObject.password, function (err) {
-                        if (err) return Homey.alert(err);
-                    });
-                    getToken(otpObject.email, otpObject.password)
-                    Homey.alert("All is ok, please add the zonneplan device")
-                }
-            });
-        }
-
-        async function getToken(email, password) {
-            var emailElement = document.getElementById('email');
-            console.log('email value html', emailElement.value);
-            Homey.api('POST', '/token', { email: email, password: password }, function (err, success) {
-                if (err) {
-                    console.log('error ', err)
-                    Homey.alert("Problem with retrieving token");
-                }
-                if (!err && success) {
-                    console.log('success', success)
-                    Homey.set('access_token', success.access_token, function (err) {
-                        if (err) return Homey.alert(err);
-                    });
-                    Homey.set('refresh_token', success.refresh_token, function (err) {
-                        if (err) return Homey.alert(err);
-                    });
-
-                }
-            });
-        }
-
-        function onHomeyReady(Homey) {
-            console.log('onHomeyReady');
-            Homey.ready();
-
-            var emailElement = document.getElementById('email');
-            var activateElement = document.getElementById('activate');
-            var saveElement = document.getElementById('save');
-
-            Homey.get('email', function (err, email) {
-                if (err) return Homey.alert(err);
-                emailElement.value = email;
-            });
-
-            activateElement.addEventListener('click', function (e) {
-                console.log('onHomeyReady activateElement click ');
-                Homey.set('email', emailElement.value, function (err) {
-                    if (err) return Homey.alert(err);
-                });
-            });
-            saveElement.addEventListener('click', function (e) {
-                console.log('onHomeyReady save click ' + otpObject);
-            });
-        }
-    </script>
-
-</body>
-
+        <!-- <form class="homey-form"> -->
+        <fieldset class="homey-form-fieldset">
+            <legend class="homey-form-legend" data-i18n="settings.refresh.legend"></legend>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="email" data-i18n="settings.refresh.email">E-mail</label>
+                <input class="homey-form-input" id="email" type="email" value="" />
+            </div>
+        </fieldset>
+        <button id="activate" class="homey-button-primary" data-i18n="settings.refresh.activate"></button>
+        <button id="save" class="homey-button-primary" disabled="disabled" data-i18n="settings.refresh.finishActivation"></button>
+    </body>
 </html>

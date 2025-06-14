@@ -1,13 +1,10 @@
 'use strict';
 
-const Homey = require('homey');
-const apis = require('./api');
-
-const RETRY_INTERVAL = 100 * 1000;
-let timer;
+import Homey from 'homey';
+import { ZonneplanApi } from '../../lib/ZonneplanApi';
+import { formatDateTime } from '../../lib/helpers';
 
 module.exports = class SolarplanDevice extends Homey.Device {
-
   async onInit() {
     this.log('Battery has been initialized');
 
@@ -28,40 +25,44 @@ module.exports = class SolarplanDevice extends Homey.Device {
     const name = this.getData().id;
     this.log(`device name id ${name}`);
     this.log(`device name ${this.getName()}`);
-
-    this.pollInvertor();
-
-    timer = this.homey.setInterval(() => {
-      // poll device state from inverter
-      this.pollInvertor();
-    }, RETRY_INTERVAL);
   }
 
   async onAdded() {
     this.log('Battery has been added');
   }
 
-  async onSettings({ oldSettings, newSettings, changedKeys }) {
+  async onSettings({
+    oldSettings,
+    newSettings,
+    changedKeys,
+  }: {
+    oldSettings: {
+      [key: string]: boolean | string | number | undefined | null;
+    };
+    newSettings: {
+      [key: string]: boolean | string | number | undefined | null;
+    };
+    changedKeys: string[];
+  }): Promise<string | void> {
     this.log('Battery settings where changed');
   }
 
-  async onRenamed(name) {
+  async onRenamed(name: string) {
     this.log('Battery was renamed');
   }
 
   async onDeleted() {
     this.log('Battery has been deleted');
-    this.homey.clearInterval(timer);
   }
 
-  validResult(entry) {
+  validResult(entry: any) {
     if (entry || entry === 0) {
       return true;
     }
     return false;
   }
 
-  async setValues(meta, usageDetails, battDetails) {
+  async setValues(meta: any, usageDetails: any, battDetails: any) {
     const deviceState = this.getState();
 
     this.log('Meta Data: ', meta);
@@ -137,9 +138,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
           break;
       }
 
-      if (batteryStateOn !== null && !(typeof deviceState !== 'undefined'
-          && typeof deviceState['boolean.onoff'] !== 'undefined'
-          && deviceState['boolean.onoff'] === batteryStateOn)) {
+      if (batteryStateOn !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.onoff'] !== 'undefined' && deviceState['boolean.onoff'] === batteryStateOn)) {
         this.setCapabilityValue('boolean.onoff', batteryStateOn);
       }
     }
@@ -148,10 +147,8 @@ module.exports = class SolarplanDevice extends Homey.Device {
       if (!this.hasCapability('lastmeasured')) await this.addCapability('lastmeasured');
 
       const lastMeasuredAt = meta['last_measured_at'];
-      if (lastMeasuredAt !== null && !(typeof deviceState !== 'undefined'
-          && typeof deviceState['lastmeasured'] !== 'undefined'
-          && deviceState['lastmeasured'] === lastMeasuredAt)) {
-        this.setCapabilityValue('lastmeasured', this.formatDateTime(lastMeasuredAt));
+      if (lastMeasuredAt !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['lastmeasured'] !== 'undefined' && deviceState['lastmeasured'] === lastMeasuredAt)) {
+        this.setCapabilityValue('lastmeasured', formatDateTime(this.homey.clock, lastMeasuredAt));
       }
     }
 
@@ -159,9 +156,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
       if (!this.hasCapability('cycle_count')) await this.addCapability('cycle_count');
 
       const cycleCount = meta['cycle_count'];
-      if (cycleCount !== null && !(typeof deviceState !== 'undefined'
-          && typeof deviceState['cycle_count'] !== 'undefined'
-          && deviceState['cycle_count'] === cycleCount)) {
+      if (cycleCount !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['cycle_count'] !== 'undefined' && deviceState['cycle_count'] === cycleCount)) {
         this.setCapabilityValue('cycle_count', cycleCount);
       }
     }
@@ -185,9 +180,10 @@ module.exports = class SolarplanDevice extends Homey.Device {
           break;
       }
 
-      if (homeyBatteryState !== null && !(typeof deviceState !== 'undefined'
-          && typeof deviceState['battery_charging_state'] !== 'undefined'
-          && deviceState['battery_charging_state'] === homeyBatteryState)) {
+      if (
+        homeyBatteryState !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['battery_charging_state'] !== 'undefined' && deviceState['battery_charging_state'] === homeyBatteryState)
+      ) {
         this.setCapabilityValue('battery_charging_state', homeyBatteryState);
       }
     }
@@ -198,10 +194,10 @@ module.exports = class SolarplanDevice extends Homey.Device {
       const dlbEnabled = meta['dynamic_load_balancing_enabled'];
       this.log(`Dynamic Load Balancing Enabled? ${dlbEnabled}`);
 
-      if (dlbEnabled !== null
-            && !(typeof deviceState !== 'undefined'
-              && typeof deviceState['boolean.dynamicloadbalancing'] !== 'undefined'
-              && deviceState['boolean.dynamicloadbalancing'] === dlbEnabled)) {
+      if (
+        dlbEnabled !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.dynamicloadbalancing'] !== 'undefined' && deviceState['boolean.dynamicloadbalancing'] === dlbEnabled)
+      ) {
         this.setCapabilityValue('boolean.dynamicloadbalancing', dlbEnabled);
       }
     }
@@ -212,10 +208,10 @@ module.exports = class SolarplanDevice extends Homey.Device {
       const dlbActivated = meta['dynamic_load_balancing_overload_active'];
       this.log(`Dynamic Load Balancing Activated? ${dlbActivated}`);
 
-      if (dlbActivated !== null
-            && !(typeof deviceState !== 'undefined'
-              && typeof deviceState['boolean.dynamicloadbalancingactive'] !== 'undefined'
-              && deviceState['boolean.dynamicloadbalancingactive'] === dlbActivated)) {
+      if (
+        dlbActivated !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.dynamicloadbalancingactive'] !== 'undefined' && deviceState['boolean.dynamicloadbalancingactive'] === dlbActivated)
+      ) {
         this.setCapabilityValue('boolean.dynamicloadbalancingactive', dlbActivated);
       }
     }
@@ -279,107 +275,17 @@ module.exports = class SolarplanDevice extends Homey.Device {
     }
   }
 
-  delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  async pollInvertor() {
-    this.log('pollInvertor');
-    await this.delay(5000);
-    let accessToken = this.homey.settings.get('access_token');
-    const refreshToken = this.homey.settings.get('refresh_token');
-
+  async syncDevice(metaData: any, zonneplanApi: ZonneplanApi) {
     const unitID = this.getData().id;
     this.log(`ID: ${unitID}`);
 
-    let resp = await apis.getDevice(accessToken);
+    const mainUuid = zonneplanApi.getConnectionData(metaData, unitID);
+    const meta = zonneplanApi.getContractData(metaData, unitID);
+    const usageDetails = await zonneplanApi.getBatteryUsageData(unitID);
+    const battDetails = await zonneplanApi.getBatteryUsageData2(mainUuid, unitID);
 
-    if (resp.message === 'Unauthenticated.') {
-      const res = await apis.getRefreshToken(refreshToken);
-
-      this.homey.settings.set('access_token', res.access_token, (err) => {
-        if (err) return Homey.alert(err);
-        return null;
-      });
-
-      this.homey.settings.set('refresh_token', res.refresh_token, (err) => {
-        if (err) return Homey.alert(err);
-        return null;
-      });
-
-      accessToken = res.access_token;
-      resp = await apis.getDevice(res.access_token);
-    }
-
-    if (resp !== undefined && resp.data !== undefined && Object.hasOwn(resp.data, 'address_groups')) {
-      const mainUuid = this.getContractDataMain(resp.data.address_groups, unitID);
-      this.log('Main Contract: ', mainUuid);
-      const meta = this.getContractData(resp.data.address_groups, unitID);
-      const usageDetails = await apis.getBatteryUsageData(accessToken, unitID);
-      const battDetails = await apis.getBatteryUsageData2(accessToken, mainUuid, unitID);
-
-      if (meta) {
-        await this.setValues(meta, usageDetails, battDetails.data.contracts[0].meta);
-      }
+    if (meta) {
+      await this.setValues(meta, usageDetails, battDetails.data.contracts[0].meta);
     }
   }
-
-  getContractData(arrayOfGroups, id) {
-    this.log('Contract: ', id);
-    // this.log('Full API Results: ', JSON.stringify(arrayOfGroups[0].connections, null, 2));
-
-    const filteredData = arrayOfGroups.map((element) => {
-      return {
-        connections: element.connections.map((connection) => {
-          return { contracts: connection.contracts.find((contract) => contract.uuid === id) };
-        }),
-      };
-    });
-
-    for (let i = 0; i < filteredData.length; i++) {
-      for (let a = 0; a < filteredData[i].connections.length; a++) {
-        if (filteredData[i].connections[a].contracts) {
-          return filteredData[i].connections[a].contracts.meta;
-        }
-      }
-    }
-
-    return null;
-  }
-
-  getContractDataMain(arrayOfGroups, id) {
-    this.log('contract ', id);
-
-    for (let i = 0; i < arrayOfGroups.length; i++) {
-      for (let a = 0; a < arrayOfGroups[i].connections.length; a++) {
-        // console.log('List of conn ', arrayOfGroups[i].connections[a]);
-        if (arrayOfGroups[i].connections[a].contracts) {
-          for (let n = 0; n < arrayOfGroups[i].connections[a].contracts.length; n++) {
-            // console.log('contract uudi ', arrayOfGroups[i].connections[a].contracts[n]);
-            if (arrayOfGroups[i].connections[a].contracts[n].uuid === id) {
-              this.log('connection uudi ', arrayOfGroups[i].connections[a].uuid);
-              return arrayOfGroups[i].connections[a].uuid;
-            }
-          }
-        }
-      }
-    }
-
-    return null;
-  }
-
-  formatDateTime(dateString) {
-    const date = new Date(dateString);
-    const options = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-      timeZone: this.homey.clock.getTimezone(),
-    };
-    return new Intl.DateTimeFormat('nl-NL', options).format(date).replace(',', '');
-  }
-
 };
