@@ -1,3 +1,6 @@
 {
-  "extends": "athom"
+  "extends": "athom/homey-app",
+  "paths": {
+    "*": ["node_modules/*", "types/*", "assets/publicTypes.ts"]
+  }
 }
