@@ -50,7 +50,7 @@
   "1.0.32": {
     "en": "Fix for new battery capabilities as of Homey v12.4.5"
   },
-  "1.1.0": {
+  "1.1.1": {
     "en": "Rebuild app, added Dutch localization in settings page, added better handling of refresh tokens",
     "nl": "App opnieuw opgebouwd, Nederlandse vertaling toegevoegd op instellingen pagina, betere verwerking van refresh tokens toegevoegd"
   }

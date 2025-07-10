@@ -3,7 +3,7 @@
 import Homey from 'homey';
 import { ZonneplanApi } from './lib/ZonneplanApi';
 
-const refreshInterval = 60 * 2000; // 2 minutes
+const refreshInterval = 60 * 3000; // 3 minutes
 
 module.exports = class MyZonneplanApp extends Homey.App {
   #zonneplanApi!: ZonneplanApi;

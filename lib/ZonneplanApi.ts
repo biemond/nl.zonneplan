@@ -1,6 +1,7 @@
 import { DeviceDefinition } from '../types/localTypes';
+import { httpsPromise } from './helpers';
 
-const zonneplayApiBase = 'https://app-api.zonneplan.nl';
+const zonneplanApiBase = 'app-api.zonneplan.nl';
 
 export class ZonneplanApi {
   #log: (...args: any[]) => void;
@@ -13,73 +14,92 @@ export class ZonneplanApi {
     this.#refreshToken = refreshToken;
   }
 
+  getHeaders() {
+    return {
+      'Content-Type': 'application/json',
+      'x-app-version': '2.1.1',
+      Authorization: `Bearer ${this.#token}`,
+      'User-Agent': 'Homey-Zonneplan/1.1.1',
+    };
+  }
+
   async getDevice() {
-    const url = `${zonneplayApiBase}/user-accounts/me`;
-    const res = await fetch(url, {
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: '/user-accounts/me',
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', Authorization: `Bearer ${this.#token}` },
+      headers: this.getHeaders(),
+      family: 4,
     });
 
-    const resp = await res.json();
-    return resp;
+    return <any>res.body;
   }
 
   async getGas(uuid: string) {
-    const url = `${zonneplayApiBase}/connections/${uuid}/gas`;
     this.#log('making gas call to get device');
-    const res = await fetch(url, {
+
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/connections/${uuid}/gas`,
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', Authorization: `Bearer ${this.#token}` },
+      headers: this.getHeaders(),
+      family: 4,
     });
-    const resp = await res.json();
-    return resp;
+
+    return <any>res.body;
   }
 
   async getElec(uuid: string) {
-    const url = `${zonneplayApiBase}/connections/${uuid}/electricity-delivered`;
     this.#log('making elec call to get device');
-    const res = await fetch(url, {
+
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/connections/${uuid}/electricity-delivered`,
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', Authorization: `Bearer ${this.#token}` },
+      headers: this.getHeaders(),
+      family: 4,
     });
-    const resp = await res.json();
-    return resp;
+
+    return <any>res.body;
   }
 
   async getBatteryUsageData(uuid: string) {
     this.#log('UUID value', uuid);
 
-    const url = `${zonneplayApiBase}/contracts/${uuid}/home_battery_installation/charts/days_cumulative?date=2024-01-01`;
-    const res = await fetch(url, {
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/contracts/${uuid}/home_battery_installation/charts/days_cumulative?date=2024-01-01`,
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', Authorization: `Bearer ${this.#token}` },
+      headers: this.getHeaders(),
+      family: 4,
     });
 
-    const resp = await res.json();
-    this.#log('Battery usage data response (1): ', resp);
-    return resp;
+    this.#log('Battery usage data response (1): ', res.body);
+    return <any>res.body;
   }
 
   async getBatteryUsageData2(uuid: string, battUuid: string) {
     this.#log('UUID value', uuid);
     this.#log('Battery UUID value', battUuid);
 
-    const url = `${zonneplayApiBase}/connections/${uuid}/home-battery-installation/${battUuid}`;
-    const res = await fetch(url, {
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/connections/${uuid}/home-battery-installation/${battUuid}`,
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1', Authorization: `Bearer ${this.#token}` },
+      headers: this.getHeaders(),
+      family: 4,
     });
 
-    const resp = await res.json();
-    this.#log('Battery usage data response (2): ', resp);
-    return resp;
+    this.#log('Battery usage data response (2): ', res.body);
+    return <any>res.body;
   }
 
   async getToken(email: string, password: string) {
-    const url = `${zonneplayApiBase}/oauth/token`;
     this.#log('Making call to get new token.');
 
-    const res = await fetch(url, {
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/oauth/token`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       referrerPolicy: 'no-referrer',
@@ -89,54 +109,62 @@ export class ZonneplanApi {
         password,
         grant_type: 'one_time_password',
       }),
+      family: 4,
     });
 
-    const resp = await res.json();
-    this.#log("We've got the token: ", resp);
+    this.#log("We've got the token: ", res.body);
+
+    const resp = <any>res.body;
 
     // Write token to local storage
     this.#refreshToken = resp.refresh_token;
     this.#token = resp.access_token;
 
-    return resp;
+    return <any>resp;
   }
 
   async getOTP(uuid: string) {
     this.#log('UUID value', uuid);
 
-    const res = await fetch(`${zonneplayApiBase}/auth/request/${uuid}`, {
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/auth/request/${uuid}`,
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       referrerPolicy: 'no-referrer',
       credentials: 'include',
+      family: 4,
     });
 
-    const resp = await res.json();
-    return resp;
+    return <any>res.body;
   }
 
   async activate(email: string) {
-    const res = await fetch(`${zonneplayApiBase}/auth/request`, {
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/auth/request/`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       referrerPolicy: 'no-referrer',
       credentials: 'include',
       body: JSON.stringify({ email }),
+      family: 4,
     });
 
-    const resp = await res.json();
-    return resp;
+    return <any>res.body;
   }
 
   async getRefreshToken() {
-    const url = `${zonneplayApiBase}/oauth/token`;
-    const res = await fetch(url, {
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/oauth/token`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-app-version': '2.1.1' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh_token: this.#refreshToken, grant_type: 'refresh_token' }),
+      family: 4,
     });
 
-    const resp = await res.json();
+    const resp = <any>res.body;
 
     // Write token to local storage
     this.#refreshToken = resp.refresh_token;
