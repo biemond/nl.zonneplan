@@ -112,9 +112,9 @@ export class ZonneplanApi {
       family: 4,
     });
 
-    this.#log("We've got the token: ", res.body);
-
     const resp = <any>res.body;
+
+    this.#log('GetToken response: ', resp);
 
     // Write token to local storage
     this.#refreshToken = resp.refresh_token;
@@ -136,22 +136,34 @@ export class ZonneplanApi {
       family: 4,
     });
 
+    this.#log('OTP response: ', res.body);
+
     return <any>res.body;
   }
 
   async activate(email: string) {
-    const res = await httpsPromise({
-      hostname: zonneplanApiBase,
-      path: `/auth/request/`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      referrerPolicy: 'no-referrer',
-      credentials: 'include',
-      body: JSON.stringify({ email }),
-      family: 4,
-    });
+    this.#log('Email value', email);
 
-    return <any>res.body;
+    try {
+      const res = await httpsPromise({
+        hostname: zonneplanApiBase,
+        path: `/auth/request/`,
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        referrerPolicy: 'no-referrer',
+        credentials: 'include',
+        body: JSON.stringify({ email }),
+        family: 4,
+      });
+
+      this.#log('Activate response: ', res.body);
+
+      return <any>res.body;
+    } catch (error) {
+      this.#log('Error during activation: ', error);
+    }
+
+    return null;
   }
 
   async getRefreshToken() {
@@ -165,6 +177,8 @@ export class ZonneplanApi {
     });
 
     const resp = <any>res.body;
+
+    this.#log('Get refresh token response: ', resp);
 
     // Write token to local storage
     this.#refreshToken = resp.refresh_token;

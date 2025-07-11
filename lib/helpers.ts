@@ -27,7 +27,7 @@ export async function httpsPromise(options: HttpsPromiseOptions): Promise<HttpsP
       const chunks: Uint8Array[] = [];
       res.on('data', (data: Uint8Array) => chunks.push(data));
       res.on('end', () => {
-        if (res.statusCode && res.statusCode !== 200) {
+        if (res.statusCode && res.statusCode !== 200 && res.statusCode !== 201) {
           reject(new Error(`Request failed with status ${res.statusCode}`));
           return;
         }

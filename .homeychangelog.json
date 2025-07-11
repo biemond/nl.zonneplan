@@ -53,5 +53,9 @@
   "1.1.3": {
     "en": "Rebuild app, added Dutch localization in settings page, added better handling of refresh tokens",
     "nl": "App opnieuw opgebouwd, Nederlandse vertaling toegevoegd op instellingen pagina, betere verwerking van refresh tokens toegevoegd"
+  },
+  "1.1.4": {
+    "en": "Fixed issue with activation after the app was rebuilt.",
+    "nl": "Activeren werkt nu weer op de juiste manier."
   }
 }
