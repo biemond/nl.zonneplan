@@ -24,7 +24,9 @@ module.exports = class MyZonneplanApp extends Homey.App {
   }
 
   async activate(email: string) {
-    return this.#zonneplanApi.activate(email);
+    var result = this.#zonneplanApi.activate(email);
+    this.refreshDevices();
+    return result;
   }
 
   async getOTP(uuid: string) {
