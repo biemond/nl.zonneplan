@@ -41,7 +41,7 @@ module.exports = class MyZonneplanApp extends Homey.App {
     // Refresh the basic data from the Zonneplan API (with retry mechanism to refresh access token if needed)
     let resp = await this.#zonneplanApi.getDevice();
 
-    if (resp.message == 'Unauthenticated.') {
+    if (resp == 'Unauthenticated.') {
       const res = await this.#zonneplanApi.getRefreshToken();
 
       this.log('Log from getting refresh token');
