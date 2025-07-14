@@ -57,5 +57,9 @@
   "1.1.4": {
     "en": "Fixed issue with activation after the app was rebuilt.",
     "nl": "Activeren werkt nu weer op de juiste manier."
+  },
+  "1.1.5": {
+    "en": "Fixed issue with refreshing token.",
+    "nl": "Token verversing gebeurt nu op de juiste manier."
   }
 }

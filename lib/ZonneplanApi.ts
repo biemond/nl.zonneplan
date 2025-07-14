@@ -24,15 +24,26 @@ export class ZonneplanApi {
   }
 
   async getDevice() {
-    const res = await httpsPromise({
-      hostname: zonneplanApiBase,
-      path: '/user-accounts/me',
-      method: 'GET',
-      headers: this.getHeaders(),
-      family: 4,
-    });
+    try {
+      const res = await httpsPromise({
+        hostname: zonneplanApiBase,
+        path: '/user-accounts/me',
+        method: 'GET',
+        headers: this.getHeaders(),
+        family: 4,
+      });
 
-    return <any>res.body;
+      return <any>res.body;
+    } catch (error: any) {
+      this.#log('Error while getting device: ', error.message);
+
+      if (error.message === 'Request failed with status 401') {
+        this.#log('Token might be expired, trying to refresh it.');
+        return 'Unauthenticated.';
+      }
+
+      return undefined;
+    }
   }
 
   async getGas(uuid: string) {
