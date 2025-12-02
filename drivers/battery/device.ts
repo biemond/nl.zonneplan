@@ -62,7 +62,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     return false;
   }
 
-  async setValues(meta: any, usageDetails: any, battDetails: any) {
+  async setValues(meta: any, usageDetails: any, battDetails: any, battControlMode: any) {
     const deviceState = this.getState();
 
     this.log('Meta Data: ', meta);
@@ -192,7 +192,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
       if (!this.hasCapability('boolean.dynamicloadbalancing')) await this.addCapability('boolean.dynamicloadbalancing');
 
       const dlbEnabled = meta['dynamic_load_balancing_enabled'];
-      this.log(`Dynamic Load Balancing Enabled? ${dlbEnabled}`);
+      this.log(`Dynamic Load Balancing available? ${dlbEnabled}`);
 
       if (
         dlbEnabled !== null &&
@@ -201,6 +201,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
         this.setCapabilityValue('boolean.dynamicloadbalancing', dlbEnabled);
       }
     }
+
 
     if (typeof meta['dynamic_load_balancing_overload_active'] !== 'undefined') {
       if (!this.hasCapability('boolean.dynamicloadbalancingactive')) await this.addCapability('boolean.dynamicloadbalancingactive');
@@ -216,11 +217,39 @@ module.exports = class SolarplanDevice extends Homey.Device {
       }
     }
 
-    if (typeof meta['home_optimization_enabled'] !== 'undefined') {
+    if (this.validResult(battControlMode.data.modes.dynamic_charging.available)) {
+      if (!this.hasCapability('boolean.dynamiccharging')) await this.addCapability('boolean.dynamiccharging');
+
+      const dcEnabled = battControlMode.data.modes.dynamic_charging.available;
+      this.log(`Dynamic charging available? ${dcEnabled}`);
+
+      if (
+        dcEnabled !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.dynamiccharging'] !== 'undefined' && deviceState['boolean.dynamiccharging'] === dcEnabled)
+      ) {
+        this.setCapabilityValue('boolean.dynamiccharging', dcEnabled);
+      }
+    }
+
+    if (typeof battControlMode.data.modes.dynamic_charging.enabled !== 'undefined') {
+      if (!this.hasCapability('boolean.dynamicchargingactive')) await this.addCapability('boolean.dynamicchargingactive');
+
+      const dcActivated = battControlMode.data.modes.dynamic_charging.enabled;
+      this.log(`Dynamic charging Activated? ${dcActivated}`);
+
+      if (
+        dcActivated !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.dynamicchargingactive'] !== 'undefined' && deviceState['boolean.dynamicchargingactive'] === dcActivated)
+      ) {
+        this.setCapabilityValue('boolean.dynamicchargingactive', dcActivated);
+      }
+    }    
+
+    if (this.validResult(battControlMode.data.modes.home_optimization.available)) {
       if (!this.hasCapability('boolean.homeoptimization')) await this.addCapability('boolean.homeoptimization');
 
-      const hoEnabled = meta['home_optimization_enabled'];
-      this.log(`Home optimization Enabled? ${hoEnabled}`);
+      const hoEnabled = battControlMode.data.modes.home_optimization.available;
+      this.log(`Home optimization available? ${hoEnabled}`);
 
       if (
         hoEnabled !== null &&
@@ -230,10 +259,10 @@ module.exports = class SolarplanDevice extends Homey.Device {
       }
     }
 
-    if (typeof meta['home_optimization_active'] !== 'undefined') {
+    if (typeof battControlMode.data.modes.home_optimization.enabled !== 'undefined') {
       if (!this.hasCapability('boolean.homeoptimizationactive')) await this.addCapability('boolean.homeoptimizationactive');
 
-      const hoActivated = meta['home_optimization_active'];
+      const hoActivated = battControlMode.data.modes.home_optimization.enabled;
       this.log(`Home optimization Activated? ${hoActivated}`);
 
       if (
@@ -244,11 +273,11 @@ module.exports = class SolarplanDevice extends Homey.Device {
       }
     }    
 
-    if (typeof meta['self_consumption_enabled'] !== 'undefined') {
+    if (this.validResult(battControlMode.data.modes.self_consumption.available)) {
       if (!this.hasCapability('boolean.selfconsumption')) await this.addCapability('boolean.selfconsumption');
 
-      const scEnabled = meta['self_consumption_enabled'];
-      this.log(`Self consumption Enabled? ${scEnabled}`);
+      const scEnabled = battControlMode.data.modes.self_consumption.available;
+      this.log(`Self consumption available? ${scEnabled}`);
 
       if (
         scEnabled !== null &&
@@ -257,6 +286,38 @@ module.exports = class SolarplanDevice extends Homey.Device {
         this.setCapabilityValue('boolean.selfconsumption', scEnabled);
       }
     }
+
+    if (typeof battControlMode.data.modes.self_consumption.enabled !== 'undefined') {
+      if (!this.hasCapability('boolean.selfconsumptionactive')) await this.addCapability('boolean.selfconsumptionactive');
+
+      const scActive = battControlMode.data.modes.self_consumption.enabled;
+      this.log(`Self consumption Enabled? ${scActive}`);
+
+      if (
+        scActive !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.selfconsumptionactive'] !== 'undefined' && deviceState['boolean.selfconsumptionactive'] === scActive)
+      ) {
+        this.setCapabilityValue('boolean.selfconsumptionactive', scActive);
+      }
+    }
+
+    if (this.validResult(battControlMode.data.control_mode)) {
+      if (!this.hasCapability('control_mode')) await this.addCapability('control_mode');
+      const controlMode = battControlMode.data.control_mode;
+      this.log(`Control mode? ${controlMode}`);
+      this.log(`Control mode dynamic_charging enabled? ${battControlMode.data.modes.dynamic_charging.enabled}`);
+      this.log(`Control mode home_optimization enabled? ${battControlMode.data.modes.home_optimization.enabled}`);
+      this.log(`Control mode self_consumption enabled? ${battControlMode.data.modes.self_consumption.enabled}`);            
+      this.log(`Control mode dynamic_charging available? ${battControlMode.data.modes.dynamic_charging.available}`);
+      this.log(`Control mode home_optimization available? ${battControlMode.data.modes.home_optimization.available}`);
+      this.log(`Control mode self_consumption available? ${battControlMode.data.modes.self_consumption.available}`);  
+      if (
+        controlMode !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['control_mode'] !== 'undefined' && deviceState['control_mode'] === controlMode)
+      ) {
+        this.setCapabilityValue('control_mode', controlMode);
+      }
+    }  
 
     let exportDay = 0;
     let importDay = 0;
@@ -325,9 +386,9 @@ module.exports = class SolarplanDevice extends Homey.Device {
     const meta = zonneplanApi.getContractData(metaData, unitID);
     const usageDetails = await zonneplanApi.getBatteryUsageData(unitID);
     const battDetails = await zonneplanApi.getBatteryUsageData2(mainUuid, unitID);
-
+    const battControlMode = await zonneplanApi.getBatteryControlMode(unitID);
     if (meta) {
-      await this.setValues(meta, usageDetails, battDetails.data.contracts[0].meta);
+      await this.setValues(meta, usageDetails, battDetails.data.contracts[0].meta, battControlMode);
     }
   }
 };

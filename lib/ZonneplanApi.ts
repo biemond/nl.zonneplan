@@ -105,6 +105,23 @@ export class ZonneplanApi {
     return <any>res.body;
   }
 
+
+
+  async getBatteryControlMode(battUuid: string) {
+    this.#log('UUID value', battUuid);
+
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/api/contracts/${battUuid}/home-battery/control-mode`,
+      method: 'GET',
+      headers: this.getHeaders(),
+      family: 4,
+    });
+
+    this.#log('Battery control-mode response (1): ', res.body);
+    return <any>res.body;
+  }
+
   async getToken(email: string, password: string) {
     this.#log('Making call to get new token.');
 

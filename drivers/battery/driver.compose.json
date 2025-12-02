@@ -10,7 +10,11 @@
     "boolean.dynamicloadbalancingactive",
     "boolean.homeoptimization",
     "boolean.homeoptimizationactive",
-    "boolean.selfconsumption",       
+    "boolean.selfconsumption",
+    "boolean.selfconsumptionactive",
+    "boolean.dynamiccharging",
+    "boolean.dynamicchargingactive",    
+    "control_mode",                      
     "lastmeasured",
     "measure_power",
     "meter_power.import",
@@ -41,34 +45,52 @@
     },
     "boolean.dynamicloadbalancing": {
       "title": {
-        "en": "Dynamic Load Balancing?",
-        "nl": "Dynamische balancering?"
+        "en": "Dynamic Load Balancing available?",
+        "nl": "Dynamische balancering beschikbaar?"
       }
     },
     "boolean.dynamicloadbalancingactive": {
       "title": {
-        "en": "Dynamic Load Balancing Active?",
+        "en": "Dynamic Load Balancing active?",
         "nl": "Dynamische balancering actief?"
       }
     },
     "boolean.selfconsumption": {
       "title": {
-        "en": "Self consumption?",
-        "nl": "Thuis gebruik?"
+        "en": "Self consumption available?",
+        "nl": "Thuis gebruik beschikbaar?"
+      }
+    },
+    "boolean.selfconsumptionactive": {
+      "title": {
+        "en": "Self consumption active?",
+        "nl": "Thuis gebruik actief?"
       }
     },
     "boolean.homeoptimizationactive": {
       "title": {
-        "en": "Home optimization Active?",
+        "en": "Home optimization active?",
         "nl": "Thuis optimalisatie actief?"
       }
     },
     "boolean.homeoptimization": {
       "title": {
-        "en": "Home optimization?",
-        "nl": "Thuis optimalisatie?"
+        "en": "Home optimization available?",
+        "nl": "Thuis optimalisatie beschikbaar?"
       }
-    },    
+    },   
+    "boolean.dynamicchargingactive": {
+      "title": {
+        "en": "Dynamic charging active?",
+        "nl": "Dynamisch laden actief?"
+      }
+    },
+    "boolean.dynamiccharging": {
+      "title": {
+        "en": "Dynamic charging available?",
+        "nl": "Dynamisch laden beschikbaar?"
+      }
+    },     
     "meter_power.import": {
       "title": {
         "en": "Total Import",
