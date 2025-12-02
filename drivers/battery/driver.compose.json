@@ -8,6 +8,9 @@
     "boolean.onoff",
     "boolean.dynamicloadbalancing",
     "boolean.dynamicloadbalancingactive",
+    "boolean.homeoptimization",
+    "boolean.homeoptimizationactive",
+    "boolean.selfconsumption",       
     "lastmeasured",
     "measure_power",
     "meter_power.import",
@@ -48,6 +51,24 @@
         "nl": "Dynamische balancering actief?"
       }
     },
+    "boolean.selfconsumption": {
+      "title": {
+        "en": "Self consumption?",
+        "nl": "Thuis gebruik?"
+      }
+    },
+    "boolean.homeoptimizationactive": {
+      "title": {
+        "en": "Home optimization Active?",
+        "nl": "Thuis optimalisatie actief?"
+      }
+    },
+    "boolean.homeoptimization": {
+      "title": {
+        "en": "Home optimization?",
+        "nl": "Thuis optimalisatie?"
+      }
+    },    
     "meter_power.import": {
       "title": {
         "en": "Total Import",

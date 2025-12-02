@@ -61,5 +61,8 @@
   "1.1.5": {
     "en": "Fixed issue with refreshing token.",
     "nl": "Token verversing gebeurt nu op de juiste manier."
-  }
+  },
+  "1.1.6": {
+    "en": "New battery options."
+  }  
 }

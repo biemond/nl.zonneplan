@@ -216,6 +216,48 @@ module.exports = class SolarplanDevice extends Homey.Device {
       }
     }
 
+    if (typeof meta['home_optimization_enabled'] !== 'undefined') {
+      if (!this.hasCapability('boolean.homeoptimization')) await this.addCapability('boolean.homeoptimization');
+
+      const hoEnabled = meta['home_optimization_enabled'];
+      this.log(`Home optimization Enabled? ${hoEnabled}`);
+
+      if (
+        hoEnabled !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.homeoptimization'] !== 'undefined' && deviceState['boolean.homeoptimization'] === hoEnabled)
+      ) {
+        this.setCapabilityValue('boolean.homeoptimization', hoEnabled);
+      }
+    }
+
+    if (typeof meta['home_optimization_active'] !== 'undefined') {
+      if (!this.hasCapability('boolean.homeoptimizationactive')) await this.addCapability('boolean.homeoptimizationactive');
+
+      const hoActivated = meta['home_optimization_active'];
+      this.log(`Home optimization Activated? ${hoActivated}`);
+
+      if (
+        hoActivated !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.homeoptimizationactive'] !== 'undefined' && deviceState['boolean.homeoptimizationactive'] === hoActivated)
+      ) {
+        this.setCapabilityValue('boolean.homeoptimizationactive', hoActivated);
+      }
+    }    
+
+    if (typeof meta['self_consumption_enabled'] !== 'undefined') {
+      if (!this.hasCapability('boolean.selfconsumption')) await this.addCapability('boolean.selfconsumption');
+
+      const scEnabled = meta['self_consumption_enabled'];
+      this.log(`Self consumption Enabled? ${scEnabled}`);
+
+      if (
+        scEnabled !== null &&
+        !(typeof deviceState !== 'undefined' && typeof deviceState['boolean.selfconsumption'] !== 'undefined' && deviceState['boolean.selfconsumption'] === scEnabled)
+      ) {
+        this.setCapabilityValue('boolean.selfconsumption', scEnabled);
+      }
+    }
+
     let exportDay = 0;
     let importDay = 0;
     if (this.validResult(battDetails['delivery_day'])) {
