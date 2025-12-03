@@ -5,6 +5,8 @@ import { ZonneplanApi } from '../../lib/ZonneplanApi';
 import { formatDateTime } from '../../lib/helpers';
 
 module.exports = class SolarplanDevice extends Homey.Device {
+
+
   async onInit() {
     this.log('Battery has been initialized');
 
@@ -25,6 +27,33 @@ module.exports = class SolarplanDevice extends Homey.Device {
     const name = this.getData().id;
     this.log(`device name id ${name}`);
     this.log(`device name ${this.getName()}`);
+
+    // flow action
+    const controlActionSelfconsumptionEnable = this.homey.flow.getActionCard('selfconsumption_enable');
+    controlActionSelfconsumptionEnable.registerRunListener(async (args, state) => {
+      const unitID = this.getData().id;
+      this.log(`unitID: ${unitID}`);
+      const mainUuid = this.homey.settings.get('mainUuid');
+      this.log(`mainUuid: ${mainUuid}`);
+      const accessToken = this.homey.settings.get('access_token');
+      const refreshToken = this.homey.settings.get('refresh_token');
+      const zonneplanApi = new ZonneplanApi(this.homey.log, accessToken, refreshToken);
+      await zonneplanApi.enableSelfConsumption(mainUuid, unitID);
+    });
+    
+    const controlActionHomeoptimizationEnable = this.homey.flow.getActionCard('homeoptimization_enable');
+    controlActionHomeoptimizationEnable.registerRunListener(async (args, state) => {
+      const unitID = this.getData().id;
+      this.log(`unitID: ${unitID}`);
+      const mainUuid = this.homey.settings.get('mainUuid');
+      this.log(`mainUuid: ${mainUuid}`);
+      this.log(`mode: ${args.mode}`);
+      const accessToken = this.homey.settings.get('access_token');
+      const refreshToken = this.homey.settings.get('refresh_token');      
+      const zonneplanApi = new ZonneplanApi(this.homey.log, accessToken, refreshToken);
+      await zonneplanApi.enableHomeOptimization(mainUuid, unitID, args.mode);
+    });
+
   }
 
   async onAdded() {
@@ -305,12 +334,12 @@ module.exports = class SolarplanDevice extends Homey.Device {
       if (!this.hasCapability('control_mode')) await this.addCapability('control_mode');
       const controlMode = battControlMode.data.control_mode;
       this.log(`Control mode? ${controlMode}`);
-      this.log(`Control mode dynamic_charging enabled? ${battControlMode.data.modes.dynamic_charging.enabled}`);
-      this.log(`Control mode home_optimization enabled? ${battControlMode.data.modes.home_optimization.enabled}`);
-      this.log(`Control mode self_consumption enabled? ${battControlMode.data.modes.self_consumption.enabled}`);            
-      this.log(`Control mode dynamic_charging available? ${battControlMode.data.modes.dynamic_charging.available}`);
-      this.log(`Control mode home_optimization available? ${battControlMode.data.modes.home_optimization.available}`);
-      this.log(`Control mode self_consumption available? ${battControlMode.data.modes.self_consumption.available}`);  
+      // this.log(`Control mode dynamic_charging enabled? ${battControlMode.data.modes.dynamic_charging.enabled}`);
+      // this.log(`Control mode home_optimization enabled? ${battControlMode.data.modes.home_optimization.enabled}`);
+      // this.log(`Control mode self_consumption enabled? ${battControlMode.data.modes.self_consumption.enabled}`);            
+      // this.log(`Control mode dynamic_charging available? ${battControlMode.data.modes.dynamic_charging.available}`);
+      // this.log(`Control mode home_optimization available? ${battControlMode.data.modes.home_optimization.available}`);
+      // this.log(`Control mode self_consumption available? ${battControlMode.data.modes.self_consumption.available}`);  
       if (
         controlMode !== null &&
         !(typeof deviceState !== 'undefined' && typeof deviceState['control_mode'] !== 'undefined' && deviceState['control_mode'] === controlMode)
@@ -383,6 +412,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     this.log(`ID: ${unitID}`);
 
     const mainUuid = zonneplanApi.getConnectionData(metaData, unitID);
+    this.homey.settings.set('mainUuid', mainUuid);
     const meta = zonneplanApi.getContractData(metaData, unitID);
     const usageDetails = await zonneplanApi.getBatteryUsageData(unitID);
     const battDetails = await zonneplanApi.getBatteryUsageData2(mainUuid, unitID);

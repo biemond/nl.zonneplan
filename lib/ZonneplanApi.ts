@@ -105,6 +105,62 @@ export class ZonneplanApi {
     return <any>res.body;
   }
 
+  async enableSelfConsumption(uuid: string, battUuid: string) {
+    this.#log('UUID value', uuid);
+    this.#log('Battery UUID value', battUuid);
+
+    const res2 = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/connections/${uuid}/home-battery-installation/${battUuid}/actions/disable_home_optimization`,
+      method: 'POST',
+      headers: this.getHeaders(),
+      family: 4,
+    });
+    this.#log('disableHomeOptimization data');
+
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/connections/${uuid}/home-battery-installation/${battUuid}/actions/enable_self_consumption`,
+      method: 'POST',
+      headers: this.getHeaders(),
+      family: 4,
+    });
+
+    this.#log('enableSelfConsumption');
+    return undefined;
+  }
+
+  async enableHomeOptimization(uuid: string, battUuid: string, mode: string) {
+    this.#log('UUID value', uuid);
+    this.#log('Battery UUID value', battUuid);
+
+    const low = {
+      max_desired_charge_power_w: 500,
+      max_desired_discharge_power_w: 500
+    };
+
+    const res2 = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/connections/${uuid}/home-battery-installation/${battUuid}/actions/enable_home_optimization`,
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(low),
+      family: 4,
+    });
+
+    this.#log('enableHomeOptimization');
+
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/connections/${uuid}/home-battery-installation/${battUuid}/actions/disable_self_consumption`,
+      method: 'POST',
+      headers: this.getHeaders(),
+      family: 4,
+    });
+
+    this.#log('disableSelfConsumption');
+    return undefined;
+  }
 
 
   async getBatteryControlMode(battUuid: string) {

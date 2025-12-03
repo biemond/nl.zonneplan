@@ -211,6 +211,63 @@
           }
         ]
       }
+    ],
+    "actions": [
+      {
+        "id": "selfconsumption_enable",
+        "title": {
+          "en": "Enable self consumption",
+          "nl": "Thuisgebruik activeren"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=battery"
+          }
+        ]
+      },
+      {
+        "id": "homeoptimization_enable",
+        "title": {
+          "en": "Enable home optimization",
+          "nl": "Thuis optimalisatie activeren"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=battery"
+          },
+          {
+            "name": "mode",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "low",
+                "title": {
+                  "en": "Low",
+                  "de": "laag"
+                }
+              },
+              {
+                "id": "middle",
+                "title": {
+                  "en": "middle",
+                  "de": "middel"
+                }
+              },
+              {
+                "id": "high",
+                "title": {
+                  "en": "high",
+                  "de": "hoog"
+                }
+              }
+            ]
+          }
+        ]
+      }
     ]
   },
   "drivers": [
