@@ -57,14 +57,14 @@
             {
               "id": "low",
               "title": {
-                "en": "Low",
+                "en": "low",
                 "de": "laag"
               }
             },
             {
-              "id": "middle",
+              "id": "medium",
               "title": {
-                "en": "middle",
+                "en": "medium",
                 "de": "middel"
               }
             },
