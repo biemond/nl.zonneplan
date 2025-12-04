@@ -62,7 +62,7 @@
     "en": "Fixed issue with refreshing token.",
     "nl": "Token verversing gebeurt nu op de juiste manier."
   },
-  "1.1.8": {
+  "1.1.9": {
     "en": "New battery options, flow actions"
   }  
 }

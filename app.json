@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "nl.zonneplan",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "compatibility": ">=12.4.5",
   "sdk": 3,
   "brandColor": "#20df30",
@@ -218,6 +218,20 @@
         "title": {
           "en": "Enable self consumption",
           "nl": "Thuisgebruik activeren"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=battery"
+          }
+        ]
+      },
+      {
+        "id": "powerplay_enable",
+        "title": {
+          "en": "Enable powerplay",
+          "nl": "Powerplay activeren"
         },
         "args": [
           {

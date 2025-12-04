@@ -44,6 +44,15 @@
       ]
     },
     {
+      "id": "powerplay_enable",
+      "title": {
+        "en": "Enable powerplay",
+        "nl": "Powerplay activeren"
+      },
+      "args": [
+      ]
+    },    
+    {
       "id": "homeoptimization_enable",
       "title": {
         "en": "Enable home optimization",

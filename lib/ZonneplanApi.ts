@@ -105,6 +105,36 @@ export class ZonneplanApi {
     return <any>res.body;
   }
 
+  async enablePowerPlay(uuid: string, battUuid: string) {
+    this.#log('UUID value', uuid);
+    this.#log('Battery UUID value', battUuid);
+    try {
+      const res2 = await httpsPromise({
+        hostname: zonneplanApiBase,
+        path: `/connections/${uuid}/home-battery-installation/${battUuid}/actions/disable_home_optimization`,
+        method: 'POST',
+        headers: this.getHeaders(),
+        family: 4,
+      });
+    } catch (error) {
+      this.#log('Error during disable: ', error);
+    }
+    this.#log('disableHomeOptimization data');
+    try {
+      const res = await httpsPromise({
+        hostname: zonneplanApiBase,
+        path: `/connections/${uuid}/home-battery-installation/${battUuid}/actions/disable_self_consumption`,
+        method: 'POST',
+        headers: this.getHeaders(),
+        family: 4,
+      });
+    } catch (error) {
+      this.#log('Error during disable: ', error);
+    }
+    this.#log('disableSelfConsumption');
+    return undefined;
+  }
+
   async enableSelfConsumption(uuid: string, battUuid: string) {
     this.#log('UUID value', uuid);
     this.#log('Battery UUID value', battUuid);
