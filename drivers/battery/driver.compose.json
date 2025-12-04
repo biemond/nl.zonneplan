@@ -27,6 +27,8 @@
     "cycle_count",
     "meter_power.daily_earned",
     "meter_power.total_earned",
+    "meter_power.total_earned_thismonth",
+    "meter_power.total_earned_prevmonth",          
     "inverterstate",
     "batterystate"       
   ],
@@ -134,7 +136,27 @@
       "units": {
         "en": "€"
       }      
-    }                 
+    },
+    "meter_power.total_earned_thismonth": {
+      "decimals": 2,
+      "title": {
+        "en": "Earned this month",
+        "nl": "Totaal verdiend deze maand"
+      },
+      "units": {
+        "en": "€"
+      }      
+    },    
+    "meter_power.total_earned_prevmonth": {
+      "decimals": 2,
+      "title": {
+        "en": "Earned prev month",
+        "nl": "Totaal verdiend vorige maand"
+      },
+      "units": {
+        "en": "€"
+      }      
+    }    
   },
   "platforms": [
     "local"

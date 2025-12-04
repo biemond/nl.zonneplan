@@ -103,7 +103,7 @@ module.exports = class SolarplanDevice extends Homey.Device {
     return false;
   }
 
-  async setValues(meta: any, usageDetails: any, battDetails: any, battControlMode: any) {
+  async setValues(meta: any, usageDetails: any, battDetails: any, battControlMode: any, battMMonthData: any) {
     const deviceState = this.getState();
 
     this.log('Meta Data: ', meta);
@@ -359,6 +359,29 @@ module.exports = class SolarplanDevice extends Homey.Device {
         this.setCapabilityValue('control_mode', controlMode);
       }
     }  
+    
+
+    if (this.validResult(battMMonthData.data[0].measurements)) {
+      if (!this.hasCapability('meter_power.total_earned_thismonth')) await this.addCapability('meter_power.total_earned_thismonth');
+      var measurements = battMMonthData.data[0].measurements;
+      var thismonth = measurements[measurements.length - 1];
+      let earnings = thismonth.value / 10000000;
+      this.log(`this month earnings: ${earnings}`);
+      if (earnings !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['meter_power.total_earned_thismonth'] !== 'undefined' && deviceState['meter_power.total_earned_thismonth'] === earnings)) {
+        this.setCapabilityValue('meter_power.total_earned_thismonth', earnings);
+      }
+    }
+
+    if (this.validResult(battMMonthData.data[0].measurements)) {
+      if (!this.hasCapability('meter_power.total_earned_prevmonth')) await this.addCapability('meter_power.total_earned_prevmonth');
+      var measurements = battMMonthData.data[0].measurements;
+      var previousmonth = measurements[measurements.length - 2];
+      let earnings = previousmonth.value / 10000000;
+      this.log(`previous month earnings: ${earnings}`);
+      if (earnings !== null && !(typeof deviceState !== 'undefined' && typeof deviceState['meter_power.total_earned_prevmonth'] !== 'undefined' && deviceState['meter_power.total_earned_prevmonth'] === earnings)) {
+        this.setCapabilityValue('meter_power.total_earned_prevmonth', earnings);
+      }
+    }
 
     let exportDay = 0;
     let importDay = 0;
@@ -429,8 +452,9 @@ module.exports = class SolarplanDevice extends Homey.Device {
     const usageDetails = await zonneplanApi.getBatteryUsageData(unitID);
     const battDetails = await zonneplanApi.getBatteryUsageData2(mainUuid, unitID);
     const battControlMode = await zonneplanApi.getBatteryControlMode(unitID);
+    const battMMonthData = await zonneplanApi.getBatteryMonthData(unitID);
     if (meta) {
-      await this.setValues(meta, usageDetails, battDetails.data.contracts[0].meta, battControlMode);
+      await this.setValues(meta, usageDetails, battDetails.data.contracts[0].meta, battControlMode, battMMonthData);
     }
   }
 };

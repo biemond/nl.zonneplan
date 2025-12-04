@@ -226,6 +226,21 @@ export class ZonneplanApi {
     return <any>res.body;
   }
 
+  async getBatteryMonthData(battUuid: string) {
+    this.#log('UUID value', battUuid);
+
+    const res = await httpsPromise({
+      hostname: zonneplanApiBase,
+      path: `/contracts/${battUuid}/home_battery_installation/charts/months?date=2025-10-01`,
+      method: 'GET',
+      headers: this.getHeaders(),
+      family: 4,
+    });
+
+    this.#log('Battery month data response (1): ', res.body);
+    return <any>res.body;
+  }
+
   async getToken(email: string, password: string) {
     this.#log('Making call to get new token.');
 
