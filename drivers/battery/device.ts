@@ -66,6 +66,21 @@ module.exports = class SolarplanDevice extends Homey.Device {
       await zonneplanApi.enableHomeOptimization(mainUuid, unitID, args.mode);
     });
 
+    const controlActionHomeOptimizationAdvanced = this.homey.flow.getActionCard('homeoptimization_advanced');
+    controlActionHomeOptimizationAdvanced.registerRunListener(async (args, state) => {
+      const unitID = this.getData().id;
+      this.log(`unitID: ${unitID}`);
+      const mainUuid = this.homey.settings.get('mainUuid');
+      this.log(`mainUuid: ${mainUuid}`);
+      this.log(`mode: ${args.mode}`);
+      const accessToken = this.homey.settings.get('access_token');
+      const refreshToken = this.homey.settings.get('refresh_token');      
+      const zonneplanApi = new ZonneplanApi(this.homey.log, accessToken, refreshToken);
+      await zonneplanApi.enableHomeOptimizationAdvanced(mainUuid, unitID, args.charge, args.discharge);
+    });    
+
+
+
   }
 
   async onAdded() {

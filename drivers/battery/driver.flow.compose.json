@@ -87,6 +87,38 @@
           ]
         }
       ]
-    }
+    },
+    {
+      "id": "homeoptimization_advanced",
+      "title": {
+        "en": "Enable home optimization advanced: Charge "
+      },
+      "args": [
+        {
+          "name": "charge",
+          "type": "range",
+          "title": {
+            "en": "Charge"
+          },
+          "min": 100,
+          "max": 20000,
+          "step": 100,
+          "label": "W, Discharge",
+          "labelDecimals": 0
+        },
+        {
+          "name": "discharge",
+          "type": "range",
+          "title": {
+            "en": "Discharge"
+          },
+          "min": 100,
+          "max": 20000,
+          "step": 100,
+          "label": "W",
+          "labelDecimals": 0
+        }           
+      ]
+    }    
   ]    
 }
