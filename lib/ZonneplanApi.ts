@@ -16,9 +16,17 @@ export class ZonneplanApi {
 
   getHeaders() {
     return {
+      ...this.getBaseHeaders(),
+      Authorization: `Bearer ${this.#token}`,
+    };
+  }
+
+  // Headers for unauthenticated (auth/token) calls. The Zonneplan API rejects
+  // requests that are missing x-app-version / User-Agent, so send them here too.
+  getBaseHeaders() {
+    return {
       'Content-Type': 'application/json',
       'x-app-version': '2.1.1',
-      Authorization: `Bearer ${this.#token}`,
       'User-Agent': 'Homey-Zonneplan/1.1.1',
     };
   }
@@ -37,7 +45,10 @@ export class ZonneplanApi {
     } catch (error: any) {
       this.#log('Error while getting device: ', error.message);
 
-      if (error.message === 'Request failed with status 401') {
+      // Match on prefix, not equality: helpers.ts now appends the API's own
+      // message (e.g. "Request failed with status 401: Unauthenticated."), so an
+      // === check would miss it and the token would never get refreshed.
+      if (error.message?.startsWith('Request failed with status 401')) {
         this.#log('Token might be expired, trying to refresh it.');
         return 'Unauthenticated.';
       }
@@ -287,7 +298,7 @@ export class ZonneplanApi {
       hostname: zonneplanApiBase,
       path: `/oauth/token`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getBaseHeaders(),
       referrerPolicy: 'no-referrer',
       credentials: 'include',
       body: JSON.stringify({
@@ -316,7 +327,7 @@ export class ZonneplanApi {
       hostname: zonneplanApiBase,
       path: `/auth/request/${uuid}`,
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getBaseHeaders(),
       referrerPolicy: 'no-referrer',
       credentials: 'include',
       family: 4,
@@ -335,7 +346,7 @@ export class ZonneplanApi {
         hostname: zonneplanApiBase,
         path: `/auth/request/`,
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getBaseHeaders(),
         referrerPolicy: 'no-referrer',
         credentials: 'include',
         body: JSON.stringify({ email }),
@@ -346,10 +357,11 @@ export class ZonneplanApi {
 
       return <any>res.body;
     } catch (error) {
+      // Surface the failure so the settings UI can alert the user, instead of
+      // silently returning null (which makes "nothing happen" on activate).
       this.#log('Error during activation: ', error);
+      throw error;
     }
-
-    return null;
   }
 
   async getRefreshToken() {
@@ -357,7 +369,9 @@ export class ZonneplanApi {
       hostname: zonneplanApiBase,
       path: `/oauth/token`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      // Must send x-app-version / User-Agent or Zonneplan rejects the call.
+      // (Same reason getBaseHeaders() exists for the other auth endpoints.)
+      headers: this.getBaseHeaders(),
       body: JSON.stringify({ refresh_token: this.#refreshToken, grant_type: 'refresh_token' }),
       family: 4,
     });
@@ -366,7 +380,12 @@ export class ZonneplanApi {
 
     this.#log('Get refresh token response: ', resp);
 
-    // Write token to local storage
+    // Only overwrite the stored tokens on a valid response. Otherwise a failed
+    // refresh (e.g. rejected headers) would clobber the good refresh token with
+    // undefined and permanently break auth until a manual re-activate.
+    if (!resp || !resp.access_token || !resp.refresh_token) {
+      throw new Error(`Token refresh failed: ${JSON.stringify(resp)}`);
+    }
     this.#refreshToken = resp.refresh_token;
     this.#token = resp.access_token;
 

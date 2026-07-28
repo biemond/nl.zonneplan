@@ -27,12 +27,22 @@ export async function httpsPromise(options: HttpsPromiseOptions): Promise<HttpsP
       const chunks: Uint8Array[] = [];
       res.on('data', (data: Uint8Array) => chunks.push(data));
       res.on('end', () => {
+        let resBody = Buffer.concat(chunks).toString();
+
         if (res.statusCode && res.statusCode !== 200 && res.statusCode !== 201 && res.statusCode !== 204) {
-          reject(new Error(`Request failed with status ${res.statusCode}`));
+          // Include the API's own message (e.g. "Invalid email address.") so the
+          // UI can show why a request failed instead of a generic error.
+          let apiMessage = '';
+          try {
+            apiMessage = JSON.parse(resBody)?.message ?? '';
+          } catch {
+            apiMessage = resBody;
+          }
+          const suffix = apiMessage ? `: ${apiMessage}` : '';
+          reject(new Error(`Request failed with status ${res.statusCode}${suffix}`));
           return;
         }
 
-        let resBody = Buffer.concat(chunks).toString();
         switch (res.headers['content-type']) {
           case 'application/json':
             try {
