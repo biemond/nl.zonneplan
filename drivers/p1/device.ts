@@ -73,40 +73,47 @@ module.exports = class SolarplanP1Device extends Homey.Device {
       this.setValues(meta);
     }
 
-    if (meta.gas_meter_code) {
-      let respGas = await zonneplanApi.getGas(conn);
-      if (respGas !== undefined && respGas.data !== undefined) {
-        this.log(respGas.data.measurement_groups);
+    // Gas detection: don't rely on the contract's `gas_meter_code` (Zonneplan leaves it
+    // null on some p1_installation contracts even when gas exists). Instead ask the
+    // connection's /gas endpoint directly and treat a valid measurement_groups payload
+    // as "this connection has gas". All-electric connections return an empty body.
+    let respGas: any = undefined;
+    try {
+      if (conn) respGas = await zonneplanApi.getGas(conn);
+    } catch (gasError: any) {
+      this.log('Error while fetching gas: ' + (gasError && gasError.message));
+    }
+    if (respGas !== undefined && respGas.data !== undefined && Array.isArray(respGas.data.measurement_groups)) {
+      this.log(respGas.data.measurement_groups);
 
-        if (!this.hasCapability('meter_gas.daily')) await this.addCapability('meter_gas.daily');
-        var gasDaily = respGas.data.measurement_groups[0].total / 1000;
-        this.setCapabilityValue('meter_gas.daily', gasDaily);
+      if (!this.hasCapability('meter_gas.daily')) await this.addCapability('meter_gas.daily');
+      var gasDaily = respGas.data.measurement_groups[0].total / 1000;
+      this.setCapabilityValue('meter_gas.daily', gasDaily);
 
-        if (!this.hasCapability('meter_gas.daily_price')) await this.addCapability('meter_gas.daily_price');
-        var priceDaily = respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000;
-        this.setCapabilityValue('meter_gas.daily_price', priceDaily);
+      if (!this.hasCapability('meter_gas.daily_price')) await this.addCapability('meter_gas.daily_price');
+      var priceDaily = respGas.data.measurement_groups[0].meta.delivery_costs_incl_tax / 10000000;
+      this.setCapabilityValue('meter_gas.daily_price', priceDaily);
 
-        if (!this.hasCapability('meter_gas.monthly')) await this.addCapability('meter_gas.monthly');
-        var gasMonthly = respGas.data.measurement_groups[1].total / 1000;
-        this.setCapabilityValue('meter_gas.monthly', gasMonthly);
+      if (!this.hasCapability('meter_gas.monthly')) await this.addCapability('meter_gas.monthly');
+      var gasMonthly = respGas.data.measurement_groups[1].total / 1000;
+      this.setCapabilityValue('meter_gas.monthly', gasMonthly);
 
-        if (!this.hasCapability('meter_gas.monthly_price')) await this.addCapability('meter_gas.monthly_price');
-        var priceMonthly = respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
-        this.setCapabilityValue('meter_gas.monthly_price', priceMonthly);
+      if (!this.hasCapability('meter_gas.monthly_price')) await this.addCapability('meter_gas.monthly_price');
+      var priceMonthly = respGas.data.measurement_groups[1].meta.delivery_costs_incl_tax / 10000000;
+      this.setCapabilityValue('meter_gas.monthly_price', priceMonthly);
 
-        if (this.validResult(respGas.data.measurement_groups[2].total)) {
-          if (!this.hasCapability('meter_gas.yearly')) await this.addCapability('meter_gas.yearly');
-          if (!this.hasCapability('meter_gas')) await this.addCapability('meter_gas');
-          var gas = respGas.data.measurement_groups[2].total / 1000;
-          this.setCapabilityValue('meter_gas.yearly', gas);
-          this.setCapabilityValue('meter_gas', gas);
-        }
+      if (this.validResult(respGas.data.measurement_groups[2].total)) {
+        if (!this.hasCapability('meter_gas.yearly')) await this.addCapability('meter_gas.yearly');
+        if (!this.hasCapability('meter_gas')) await this.addCapability('meter_gas');
+        var gas = respGas.data.measurement_groups[2].total / 1000;
+        this.setCapabilityValue('meter_gas.yearly', gas);
+        this.setCapabilityValue('meter_gas', gas);
+      }
 
-        if (this.validResult(respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax)) {
-          if (!this.hasCapability('meter_gas.yearly_price')) await this.addCapability('meter_gas.yearly_price');
-          var price = respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000;
-          this.setCapabilityValue('meter_gas.yearly_price', price);
-        }
+      if (this.validResult(respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax)) {
+        if (!this.hasCapability('meter_gas.yearly_price')) await this.addCapability('meter_gas.yearly_price');
+        var price = respGas.data.measurement_groups[2].meta.delivery_costs_incl_tax / 10000000;
+        this.setCapabilityValue('meter_gas.yearly_price', price);
       }
     } else {
       if (this.hasCapability('meter_gas')) await this.removeCapability('meter_gas');
