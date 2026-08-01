@@ -67,5 +67,8 @@
   },
   "1.1.12": {
     "en": "battery last month earnings fix"
-  }      
+  } ,
+  "1.1.13": {
+    "en": "token refresh and gas meter values"
+  }         
 }
